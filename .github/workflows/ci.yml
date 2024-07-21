@@ -60,15 +60,11 @@ jobs:
           team_id: 8323
           outfile_path: ./team-scores.md
 
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
-
       - name: check for changes
-        run: git add ${{ github.event.inputs.outfile_path }}
+        run: git add .
 
       - name: commit changed files
-        run: git commit -m "Auto updating ${{ github.event.inputs.outfile_path }}"
+        run: git commit -m "Auto updating score file"
 
       - name: fetch from master
         run: git fetch origin main
