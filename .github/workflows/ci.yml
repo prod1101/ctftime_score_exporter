@@ -58,6 +58,8 @@ jobs:
         uses: ./
         with:
           milliseconds: 2000
+          team_id: 8323
+          outfile_path: ./team-scores.md
 
       - name: Print Output
         id: output
