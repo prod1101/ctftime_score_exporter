@@ -66,11 +66,9 @@ jobs:
       - name: check for changes
         run: git add .
 
-      - name: commit changed files
-        run: git commit -m "Auto updating score file"
-
-      - name: fetch from master
-        run: git fetch origin main
-
-      - name: push code to master
-        run: git push origin HEAD:main
+      - name: check for changes
+        run: |
+          git config --global user.name 'prod1101'
+          git config --global user.email 'prod1101@users.noreply.github.com'
+          git commit -am "Automated update"
+          git push
