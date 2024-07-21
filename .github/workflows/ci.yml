@@ -65,4 +65,13 @@ jobs:
         run: echo "${{ steps.test-action.outputs.time }}"
 
       - name: check for changes
-        run: git status
+        run: git add ${{ steps.test-action.inputs.outfile_path }}
+
+      - name: commit changed files
+        run: git commit -m "Auto updating ${{ steps.test-action.inputs.outfile_path }}"
+
+      - name: fetch from master
+        run: git fetch origin main
+
+      - name: push code to master
+        run: git push origin HEAD:main
