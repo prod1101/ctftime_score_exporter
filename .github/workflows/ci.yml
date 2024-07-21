@@ -60,6 +60,12 @@ jobs:
           team_id: 8323
           outfile_path: ./team-scores.md
 
+      - name: switching from HTTPS to SSH
+        run: git remote set-url origin ${{ secrets.ssh }}
+
+      - name: check for changes
+        run: git status
+
       - name: check for changes
         run: git add .
 
