@@ -24920,6 +24920,69 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ 2584:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fetchTeamByTeamId = fetchTeamByTeamId;
+exports.fetchCompetitionsFromYear = fetchCompetitionsFromYear;
+exports.filterCompetitionsByTeamId = filterCompetitionsByTeamId;
+const http = __importStar(__nccwpck_require__(6255));
+async function fetchTeamByTeamId(team_id) {
+    const client = new http.HttpClient('CTFTime Crawler');
+    const response = await client.getJson(`https://ctftime.org/api/v1/teams/${team_id}/`);
+    if (response.result === null) {
+        throw new Error(`No team found for the team id ${team_id}`);
+    }
+    return response.result;
+}
+async function fetchCompetitionsFromYear(year) {
+    const client = new http.HttpClient('CTFTime Crawler');
+    const response = await client.getJson(`https://ctftime.org/api/v1/results/${year}/`);
+    if (response.result === null) {
+        throw new Error(`No competition found for the year ${year}`);
+    }
+    return response.result;
+}
+function filterCompetitionsByTeamId(competitions, teamId) {
+    const filteredEntries = [];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [key, competition] of Object.entries(competitions)) {
+        if (competition.scores.some(score => score.team_id === teamId)) {
+            filteredEntries.push(competition);
+        }
+    }
+    return filteredEntries.reverse();
+}
+
+
+/***/ }),
+
 /***/ 399:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -24952,12 +25015,31 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
 const wait_1 = __nccwpck_require__(5259);
+const ctf_time_api_1 = __nccwpck_require__(2584);
+const utils_1 = __nccwpck_require__(1314);
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
     try {
+        // Fetch team data
+        const team_id = parseInt(core.getInput('team_id'), 10);
+        console.log(team_id);
+        const interestingYears = (0, utils_1.range)(2011, 2013).reverse();
+        const competition_promises = interestingYears.map(async (year) => (0, ctf_time_api_1.fetchCompetitionsFromYear)(year));
+        const [team_data, competitions] = await Promise.all([
+            (0, ctf_time_api_1.fetchTeamByTeamId)(team_id),
+            competition_promises
+        ]);
+        console.log(team_data, competitions);
+        // // Fetch competition data
+        // const interestingYears = range(2011, new Date().getFullYear() + 1).reverse()
+        // const competion_data = await Promise.all(
+        //   interestingYears.map(async year => fetchCompetitionsFromYear(year))
+        // )
+        //
+        // console.log(competion_data)
         const ms = core.getInput('milliseconds');
         // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
         core.debug(`Waiting ${ms} milliseconds ...`);
@@ -24973,6 +25055,33 @@ async function run() {
         if (error instanceof Error)
             core.setFailed(error.message);
     }
+}
+
+
+/***/ }),
+
+/***/ 1314:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.range = range;
+// https://stackoverflow.com/a/8273091
+function range(start, stop, step = 1) {
+    if (typeof stop == 'undefined') {
+        // one param defined
+        stop = start;
+        start = 0;
+    }
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+        return [];
+    }
+    const result = [];
+    for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
+        result.push(i);
+    }
+    return result;
 }
 
 

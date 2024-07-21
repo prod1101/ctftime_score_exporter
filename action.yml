@@ -9,10 +9,14 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  team_id:
+    description: 'Team Id to generate the scores for.'
     required: true
-    default: '1000'
+    default: '8323'
+  outfile_path:
+    description: 'Filepath to print the output to'
+    required: true
+    default: './team-scores.md'
 
 # Define your outputs here.
 outputs:
