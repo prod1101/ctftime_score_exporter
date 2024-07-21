@@ -25014,41 +25014,43 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
-const wait_1 = __nccwpck_require__(5259);
 const ctf_time_api_1 = __nccwpck_require__(2584);
 const utils_1 = __nccwpck_require__(1314);
+const fs = __importStar(__nccwpck_require__(7147));
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
     try {
-        // Fetch team data
         const team_id = parseInt(core.getInput('team_id'), 10);
-        console.log(team_id);
-        const interestingYears = (0, utils_1.range)(2011, 2013).reverse();
-        const competition_promises = interestingYears.map(async (year) => (0, ctf_time_api_1.fetchCompetitionsFromYear)(year));
-        const [team_data, competitions] = await Promise.all([
-            (0, ctf_time_api_1.fetchTeamByTeamId)(team_id),
-            competition_promises
-        ]);
-        console.log(team_data, competitions);
-        // // Fetch competition data
-        // const interestingYears = range(2011, new Date().getFullYear() + 1).reverse()
-        // const competion_data = await Promise.all(
-        //   interestingYears.map(async year => fetchCompetitionsFromYear(year))
-        // )
-        //
-        // console.log(competion_data)
-        const ms = core.getInput('milliseconds');
-        // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-        core.debug(`Waiting ${ms} milliseconds ...`);
-        // Log the current timestamp, wait, then log the new timestamp
-        core.debug(new Date().toTimeString());
-        await (0, wait_1.wait)(parseInt(ms, 10));
-        core.debug(new Date().toTimeString());
-        // Set outputs for other workflow steps to use
-        core.setOutput('time', new Date().toTimeString());
+        const team_data = await (0, ctf_time_api_1.fetchTeamByTeamId)(team_id);
+        console.log(team_data);
+        const interesting_years = (0, utils_1.range)(2011, new Date().getFullYear() + 1)
+            .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
+            .reverse();
+        console.log(interesting_years);
+        let out = `# Scores
+Check out [our (almost complete) CTF history on CTFtime](https://ctftime.org/team/${team_id}).
+We also participate together with our friends from [DragonSec SI](https://dragonsec.si/) as [FuzzyDragons](https://ctftime.org/team/193568)
+    
+## Past CTF participation\n`;
+        for (const year of interesting_years) {
+            out += `### ${year}\n`;
+            out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`;
+            out += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`;
+            const competitions = await (0, ctf_time_api_1.fetchCompetitionsFromYear)(year);
+            const filtered_competitions = (0, ctf_time_api_1.filterCompetitionsByTeamId)(competitions, team_id);
+            for (const competition of filtered_competitions) {
+                const place = competition.scores.find(score => score.team_id === team_id);
+                if (place !== undefined) {
+                    out += `  * ${competition.title} <span class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
+                }
+            }
+            out += `\n`;
+        }
+        fs.writeFileSync(core.getInput('outfile_path'), out);
+        console.log(out);
     }
     catch (error) {
         // Fail the workflow run if an error occurs
@@ -25082,30 +25084,6 @@ function range(start, stop, step = 1) {
         result.push(i);
     }
     return result;
-}
-
-
-/***/ }),
-
-/***/ 5259:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.wait = wait;
-/**
- * Wait for a number of milliseconds.
- * @param milliseconds The number of milliseconds to wait.
- * @returns {Promise<string>} Resolves with 'done!' after the wait is over.
- */
-async function wait(milliseconds) {
-    return new Promise(resolve => {
-        if (isNaN(milliseconds)) {
-            throw new Error('milliseconds not a number');
-        }
-        setTimeout(() => resolve('done!'), milliseconds);
-    });
 }
 
 
