@@ -23,11 +23,7 @@ export async function run(): Promise<void> {
       .reverse()
     console.log(interesting_years)
 
-    let out = `# Scores
-Check out [our (almost complete) CTF history on CTFtime](https://ctftime.org/team/${team_id}).
-We also participate together with our friends from [DragonSec SI](https://dragonsec.si/) as [FuzzyDragons](https://ctftime.org/team/193568)
-    
-## Past CTF participation\n`
+    let out = core.getInput('prefix')
     for (const year of interesting_years) {
       out += `### ${year}\n`
       out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`

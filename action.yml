@@ -15,6 +15,10 @@ inputs:
     description: 'Filepath to print the output to'
     required: true
     default: './team-scores.md'
+  prefix:
+    description: 'Text to prepend to the scores'
+    required: false
+    default: ''
 
 outputs:
   scores:
