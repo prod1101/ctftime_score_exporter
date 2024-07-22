@@ -68,15 +68,18 @@ jobs:
 
             ## Past CTF participation
 
-      - name: check for changes
-        run: git status
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
 
-      - name: check for changes
-        run: git add .
-
-      - name: check for changes
-        run: |
-          git config --global user.name 'prod1101'
-          git config --global user.email 'github@prod1101.com'
-          git commit -am "Automated update"
-          git push
+#      - name: check for changes
+#        run: git status
+#
+#      - name: check for changes
+#        run: git add .
+#
+#      - name: check for changes
+#        run: |
+#          git config --global user.name 'prod1101'
+#          git config --global user.email 'github@prod1101.com'
+#          git commit -am "Automated update"
+#          git push
