@@ -23,7 +23,7 @@ export async function run(): Promise<void> {
       .reverse()
     console.log(interesting_years)
 
-    let out = core.getInput('prefix')
+    let out = `${core.getInput('prefix')}\n`
     for (const year of interesting_years) {
       out += `### ${year}\n`
       out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`
