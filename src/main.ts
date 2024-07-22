@@ -23,9 +23,9 @@ export async function run(): Promise<void> {
       .reverse()
     console.log(interesting_years)
 
-    let out = `${core.getInput('prefix')}\n`
+    let out = core.getInput('prefix')
     for (const year of interesting_years) {
-      out += `### ${year}\n`
+      out += `\n### ${year}\n`
       out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`
       out += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`
       const competitions = await fetchCompetitionsFromYear(year)
@@ -42,7 +42,6 @@ export async function run(): Promise<void> {
           out += `  * ${competition.title} <span class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
         }
       }
-      out += `\n`
     }
     fs.writeFileSync(core.getInput('outfile_path'), out)
 
