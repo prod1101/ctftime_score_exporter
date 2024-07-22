@@ -19,10 +19,14 @@ inputs:
     description: 'Text to prepend to the scores'
     required: false
     default: ''
+  sufix:
+    description: 'Text to append to the scores'
+    required: false
+    default: ''
 
 outputs:
   scores:
-    description: 'The generated scores'
+    description: 'The fetched and generated scores'
 
 runs:
   using: node20
