@@ -1,13 +1,11 @@
 name: 'The name of your action here'
 description: 'Provide a description here'
-author: 'Your name or organization here'
+author: 'prod1101'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
+  icon: 'flag'
   color: 'red'
 
-# Define your inputs here.
 inputs:
   team_id:
     description: 'Team Id to generate the scores for.'
@@ -18,10 +16,9 @@ inputs:
     required: true
     default: './team-scores.md'
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  scores:
+    description: 'The generated scores'
 
 runs:
   using: node20

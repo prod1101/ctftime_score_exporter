@@ -45,7 +45,7 @@ jobs:
         id: build
         run: npm run bundle
 
-      # This will fail the workflow if the `dist/` directory is different than
+      # This will fail the workflow if the `dist/` directory is different from
       # expected.
       - name: Compare Directories
         id: diff
@@ -61,7 +61,7 @@ jobs:
             exit 1
           fi
 
-      # If `dist/` was different than expected, upload the expected version as a
+      # If `dist/` was different from expected, upload the expected version as a
       # workflow artifact.
       - if: ${{ failure() && steps.diff.outcome == 'failure' }}
         name: Upload Artifact
