@@ -47,7 +47,6 @@ jobs:
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
-    needs: test-typescript
 
     steps:
       - name: Checkout
@@ -62,11 +61,11 @@ jobs:
           outfile_path: ./team-scores.md
           prefix: |
             # Scores
-            
+
             Check out [our (almost complete) CTF history on CTFtime](https://ctftime.org/team/8323). \
             We also participate together with our friends from [DragonSec SI](https://dragonsec.si/)
             as[FuzzyDragons](https://ctftime.org/team/193568)
-            
+
             ## Past CTF participation
 
       - name: check for changes
