@@ -15,13 +15,11 @@ export async function run(): Promise<void> {
   try {
     const team_id = parseInt(core.getInput('team_id'), 10)
     const team_data = await fetchTeamByTeamId(team_id)
-    console.log(team_data)
     const interesting_years = range(2011, new Date().getFullYear() + 1)
       .filter(
         year => team_data.rating[year.toString()].rating_points !== undefined
       )
       .reverse()
-    console.log(interesting_years)
 
     let out = core.getInput('prefix')
     for (const year of interesting_years) {
@@ -45,7 +43,7 @@ export async function run(): Promise<void> {
     }
     fs.writeFileSync(core.getInput('outfile_path'), out)
 
-    console.log(out)
+    core.exportVariable('scores', out)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)

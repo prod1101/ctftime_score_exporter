@@ -25025,11 +25025,9 @@ async function run() {
     try {
         const team_id = parseInt(core.getInput('team_id'), 10);
         const team_data = await (0, ctf_time_api_1.fetchTeamByTeamId)(team_id);
-        console.log(team_data);
         const interesting_years = (0, utils_1.range)(2011, new Date().getFullYear() + 1)
             .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
             .reverse();
-        console.log(interesting_years);
         let out = core.getInput('prefix');
         for (const year of interesting_years) {
             out += `\n### ${year}\n`;
@@ -25045,7 +25043,7 @@ async function run() {
             }
         }
         fs.writeFileSync(core.getInput('outfile_path'), out);
-        console.log(out);
+        core.exportVariable('scores', out);
     }
     catch (error) {
         // Fail the workflow run if an error occurs

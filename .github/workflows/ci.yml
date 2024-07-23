@@ -62,7 +62,7 @@ jobs:
         uses: ./
         with:
           team_id: 8323
-          outfile_path: ./content/scores.md
+          outfile_path: ./scores.md
           prefix: |
             # Scores
 
