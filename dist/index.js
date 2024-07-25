@@ -25090,7 +25090,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.percentiles = void 0;
 exports.printPercentileMarkdownTable = printPercentileMarkdownTable;
-exports.printPercentiles = printPercentiles;
 exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
 const core = __importStar(__nccwpck_require__(2186));
@@ -25113,13 +25112,6 @@ function printPercentileMarkdownTable() {
         ret += `| <span ${styleByRanking(75)}>>75th</span> | ${exports.percentiles['75']} |\n`;
         ret += `| <span ${styleByRanking(50)}>>50th</span> | ${exports.percentiles['50']} |\n`;
         ret += `| <span ${styleByRanking(25)}>>25th</span> | ${exports.percentiles['25']} |\n`;
-    }
-    return ret;
-}
-function printPercentiles() {
-    let ret = '';
-    for (const percentile in exports.percentiles) {
-        ret += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> percentile: ${exports.percentiles[percentile]}\n`;
     }
     return ret;
 }

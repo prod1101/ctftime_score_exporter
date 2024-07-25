@@ -24,14 +24,6 @@ export function printPercentileMarkdownTable(): string {
   return ret
 }
 
-export function printPercentiles(): string {
-  let ret = ''
-  for (const percentile in percentiles) {
-    ret += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> percentile: ${percentiles[percentile]}\n`
-  }
-  return ret
-}
-
 function insert_percentile(percentile: number): void {
   if (percentile === 100) {
     percentiles['100']++
