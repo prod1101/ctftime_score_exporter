@@ -25095,9 +25095,6 @@ exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
 // https://stackoverflow.com/a/8273091
 const core = __importStar(__nccwpck_require__(2186));
-function hex(s) {
-    return s;
-}
 function range(start, stop, step = 1) {
     if (typeof stop == 'undefined') {
         // one param defined
