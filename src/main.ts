@@ -55,11 +55,7 @@ export async function run(): Promise<void> {
       }
     }
 
-    const output =
-      core.getInput('prefix') +
-      printPercentileMarkdownTable() +
-      out +
-      core.getInput('suffix')
+    const output = `${core.getInput('prefix')}\n${printPercentileMarkdownTable()}${out}${core.getInput('suffix')}`
 
     fs.writeFileSync(core.getInput('outfile_path'), output)
 

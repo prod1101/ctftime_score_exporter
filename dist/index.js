@@ -25044,10 +25044,7 @@ async function run() {
                 }
             }
         }
-        const output = core.getInput('prefix') +
-            (0, utils_1.printPercentileMarkdownTable)() +
-            out +
-            core.getInput('suffix');
+        const output = `${core.getInput('prefix')}\n${(0, utils_1.printPercentileMarkdownTable)()}${out}${core.getInput('suffix')}`;
         fs.writeFileSync(core.getInput('outfile_path'), output);
         core.exportVariable('scores', output);
     }
@@ -25124,14 +25121,14 @@ exports.percentiles = {
 function printPercentileMarkdownTable() {
     let ret = '';
     if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
-        ret += '| Percentile | Count |\n';
-        ret += '|------------|-------|\n';
-        ret += `| 100th | ${exports.percentiles['100']} |\n`;
-        ret += `| >99th | ${exports.percentiles['99']} |\n`;
-        ret += `| >95th | ${exports.percentiles['95']} |\n`;
-        ret += `| >75th | ${exports.percentiles['75']} |\n`;
-        ret += `| >50th | ${exports.percentiles['50']} |\n`;
-        ret += `| >25th | ${exports.percentiles['25']} |\n`;
+        ret += '| Percentile: | Count |\n';
+        ret += '|-------------|-------|\n';
+        ret += `| <span ${styleByRanking(100)}>100th</span> | ${exports.percentiles['100']} |\n`;
+        ret += `| <span ${styleByRanking(99)}>>99th</span> | ${exports.percentiles['99']} |\n`;
+        ret += `| <span ${styleByRanking(95)}>>95th</span> | ${exports.percentiles['95']} |\n`;
+        ret += `| <span ${styleByRanking(75)}>>75th</span> | ${exports.percentiles['75']} |\n`;
+        ret += `| <span ${styleByRanking(50)}>>50th</span> | ${exports.percentiles['50']} |\n`;
+        ret += `| <span ${styleByRanking(25)}>>25th</span> | ${exports.percentiles['25']} |\n`;
     }
     return ret;
 }

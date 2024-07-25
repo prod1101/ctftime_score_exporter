@@ -32,14 +32,14 @@ export const percentiles: { [key: string]: number } = {
 export function printPercentileMarkdownTable(): string {
   let ret = ''
   if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
-    ret += '| Percentile | Count |\n'
-    ret += '|------------|-------|\n'
-    ret += `| 100th | ${percentiles['100']} |\n`
-    ret += `| >99th | ${percentiles['99']} |\n`
-    ret += `| >95th | ${percentiles['95']} |\n`
-    ret += `| >75th | ${percentiles['75']} |\n`
-    ret += `| >50th | ${percentiles['50']} |\n`
-    ret += `| >25th | ${percentiles['25']} |\n`
+    ret += '| Percentile: | Count |\n'
+    ret += '|-------------|-------|\n'
+    ret += `| <span ${styleByRanking(100)}>100th</span> | ${percentiles['100']} |\n`
+    ret += `| <span ${styleByRanking(99)}>>99th</span> | ${percentiles['99']} |\n`
+    ret += `| <span ${styleByRanking(95)}>>95th</span> | ${percentiles['95']} |\n`
+    ret += `| <span ${styleByRanking(75)}>>75th</span> | ${percentiles['75']} |\n`
+    ret += `| <span ${styleByRanking(50)}>>50th</span> | ${percentiles['50']} |\n`
+    ret += `| <span ${styleByRanking(25)}>>25th</span> | ${percentiles['25']} |\n`
   }
   return ret
 }
