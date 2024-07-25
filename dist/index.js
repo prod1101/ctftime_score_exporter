@@ -25028,6 +25028,7 @@ async function run() {
         const interesting_years = (0, utils_1.range)(2011, new Date().getFullYear() + 1)
             .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
             .reverse();
+        const percentile_colors = core.getInput('percentile_colors').toLowerCase() === 'true';
         let out = core.getInput('prefix');
         for (const year of interesting_years) {
             out += `\n### ${year}\n`;
@@ -25038,7 +25039,7 @@ async function run() {
             for (const competition of filtered_competitions) {
                 const place = competition.scores.find(score => score.team_id === team_id);
                 if (place !== undefined) {
-                    out += `  * ${competition.title} <span class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
+                    out += `  * ${competition.title} <span ${percentile_colors ? (0, utils_1.styleByRanking)(place.place, competition.scores.length) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
                 }
             }
         }
@@ -25062,6 +25063,7 @@ async function run() {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.range = range;
+exports.styleByRanking = styleByRanking;
 // https://stackoverflow.com/a/8273091
 function range(start, stop, step = 1) {
     if (typeof stop == 'undefined') {
@@ -25077,6 +25079,22 @@ function range(start, stop, step = 1) {
         result.push(i);
     }
     return result;
+}
+function styleByRanking(placement, teams) {
+    const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0);
+    if (percentile_rank === 100)
+        return 'style="color:#e5cc80"';
+    if (percentile_rank >= 99)
+        return 'style="color:#e268a8"';
+    if (percentile_rank >= 95)
+        return 'style="color:#ff8000"';
+    if (percentile_rank >= 75)
+        return 'style="color:#a335ee"';
+    if (percentile_rank >= 50)
+        return 'style="color:#0070ff"';
+    if (percentile_rank >= 25)
+        return 'style="color:#1eff00"';
+    return '';
 }
 
 
