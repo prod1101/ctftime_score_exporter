@@ -88,16 +88,16 @@ function validateColorString(s: string): string {
 
 export function styleByRanking(percentile_rank: number): string {
   if (percentile_rank === 100)
-    return `style="color:#${validateColorString(core.getInput('percentile_color_100'))}"`
+    return `style="color:${validateColorString(core.getInput('percentile_color_100'))}"`
   if (percentile_rank >= 99)
-    return `style="color:#${validateColorString(core.getInput('percentile_color_99'))}"`
+    return `style="color:${validateColorString(core.getInput('percentile_color_99'))}"`
   if (percentile_rank >= 95)
-    return `style="color:#${validateColorString(core.getInput('percentile_color_95'))}"`
+    return `style="color:${validateColorString(core.getInput('percentile_color_95'))}"`
   if (percentile_rank >= 75)
-    return `style="color:#${validateColorString(core.getInput('percentile_color_75'))}"`
+    return `style="color:${validateColorString(core.getInput('percentile_color_75'))}"`
   if (percentile_rank >= 50)
-    return `style="color:#${validateColorString(core.getInput('percentile_color_50'))}"`
+    return `style="color:${validateColorString(core.getInput('percentile_color_50'))}"`
   if (percentile_rank >= 25)
-    return `style="color:#${validateColorString(core.getInput('percentile_color_25'))}"`
+    return `style="color:${validateColorString(core.getInput('percentile_color_25'))}"`
   return ''
 }
