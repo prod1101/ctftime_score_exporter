@@ -1,6 +1,42 @@
 // https://stackoverflow.com/a/8273091
 import * as core from '@actions/core'
 
+type HexDigit =
+  | '0'
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | 'a'
+  | 'b'
+  | 'c'
+  | 'd'
+  | 'e'
+  | 'f'
+  | 'A'
+  | 'B'
+  | 'C'
+  | 'D'
+  | 'E'
+  | 'F'
+type HexColor<T extends string> =
+  T extends `#${HexDigit}${HexDigit}${HexDigit}${infer Rest1}`
+    ? Rest1 extends ``
+      ? T // three-digit hex color
+      : Rest1 extends `${HexDigit}${HexDigit}${HexDigit}`
+        ? T // six-digit hex color
+        : never
+    : never
+
+function hex<T extends string>(s: HexColor<T>): T {
+  return s
+}
+
 export function range(start: number, stop: number, step = 1): number[] {
   if (typeof stop == 'undefined') {
     // one param defined
@@ -79,12 +115,25 @@ export function calculatePercentileRanking(
   return percentile_rank
 }
 
+function validateColorString(s: string): string {
+  if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
+    throw new Error(`Invalid color string: ${s}`)
+  }
+  return s
+}
+
 export function styleByRanking(percentile_rank: number): string {
-  if (percentile_rank === 100) return 'style="color:#e5cc80"'
-  if (percentile_rank >= 99) return 'style="color:#e268a8"'
-  if (percentile_rank >= 95) return 'style="color:#ff8000"'
-  if (percentile_rank >= 75) return 'style="color:#a335ee"'
-  if (percentile_rank >= 50) return 'style="color:#0070ff"'
-  if (percentile_rank >= 25) return 'style="color:#1eff00"'
+  if (percentile_rank === 100)
+    return `style="color:#${validateColorString(core.getInput('percentile_color_100'))}"`
+  if (percentile_rank >= 99)
+    return `style="color:#${validateColorString(core.getInput('percentile_color_99'))}"`
+  if (percentile_rank >= 95)
+    return `style="color:#${validateColorString(core.getInput('percentile_color_95'))}"`
+  if (percentile_rank >= 75)
+    return `style="color:#${validateColorString(core.getInput('percentile_color_75'))}"`
+  if (percentile_rank >= 50)
+    return `style="color:#${validateColorString(core.getInput('percentile_color_50'))}"`
+  if (percentile_rank >= 25)
+    return `style="color:#${validateColorString(core.getInput('percentile_color_25'))}"`
   return ''
 }

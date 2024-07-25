@@ -16,6 +16,7 @@ inputs:
     description: 'Filepath to print the output to'
     required: true
     default: './team-scores.md'
+
   prefix:
     description: 'Text to prepend to the scores'
     required: false
@@ -24,6 +25,7 @@ inputs:
     description: 'Text to append to the scores'
     required: false
     default: ''
+
   percentile_colors:
     description: 'WoW colors for the percentiles'
     required: false
@@ -32,6 +34,37 @@ inputs:
     description: 'Display the percentile rankings'
     required: false
     default: 'false'
+  percentile_color_100:
+    description:
+      'Color for the 100th percentile. Only used if percentile_colors is true.'
+    required: false
+    default: '#e5cc80'
+  percentile_color_99:
+    description:
+      'Color for the 99th percentile. Only used if percentile_colors is true.'
+    required: false
+    default: '#e268a8'
+  percentile_color_95:
+    description:
+      'Color for the 95th percentile. Only used if percentile_colors is true.'
+    required: false
+    default: '#ff8000'
+  percentile_color_75:
+    description:
+      'Color for the 75th percentile. Only used if percentile_colors is true.'
+    required: false
+    default: '#a335ee'
+  percentile_color_50:
+    description:
+      'Color for the 50th percentile. Only used if percentile_colors is true.'
+    required: false
+    default: '#0070ff'
+  percentile_color_25:
+    description:
+      'Color for the 25th percentile. Only used if percentile_colors is true.'
+    required: false
+    default: '#1eff00'
+
 outputs:
   scores:
     description: 'The fetched and generated scores'

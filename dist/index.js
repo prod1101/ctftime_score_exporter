@@ -25095,6 +25095,9 @@ exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
 // https://stackoverflow.com/a/8273091
 const core = __importStar(__nccwpck_require__(2186));
+function hex(s) {
+    return s;
+}
 function range(start, stop, step = 1) {
     if (typeof stop == 'undefined') {
         // one param defined
@@ -25166,19 +25169,25 @@ function calculatePercentileRanking(placement, teams) {
     }
     return percentile_rank;
 }
+function validateColorString(s) {
+    if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
+        throw new Error(`Invalid color string: ${s}`);
+    }
+    return s;
+}
 function styleByRanking(percentile_rank) {
     if (percentile_rank === 100)
-        return 'style="color:#e5cc80"';
+        return `style="color:#${validateColorString(core.getInput('percentile_color_100'))}"`;
     if (percentile_rank >= 99)
-        return 'style="color:#e268a8"';
+        return `style="color:#${validateColorString(core.getInput('percentile_color_99'))}"`;
     if (percentile_rank >= 95)
-        return 'style="color:#ff8000"';
+        return `style="color:#${validateColorString(core.getInput('percentile_color_95'))}"`;
     if (percentile_rank >= 75)
-        return 'style="color:#a335ee"';
+        return `style="color:#${validateColorString(core.getInput('percentile_color_75'))}"`;
     if (percentile_rank >= 50)
-        return 'style="color:#0070ff"';
+        return `style="color:#${validateColorString(core.getInput('percentile_color_50'))}"`;
     if (percentile_rank >= 25)
-        return 'style="color:#1eff00"';
+        return `style="color:#${validateColorString(core.getInput('percentile_color_25'))}"`;
     return '';
 }
 
