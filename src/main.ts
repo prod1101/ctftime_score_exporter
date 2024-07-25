@@ -4,7 +4,7 @@ import {
   fetchTeamByTeamId,
   filterCompetitionsByTeamId
 } from './ctf-time-api'
-import {range, styleByRanking} from './utils'
+import { range, styleByRanking } from './utils'
 import * as fs from 'fs'
 
 /**
