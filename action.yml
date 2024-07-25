@@ -27,11 +27,11 @@ inputs:
     default: ''
 
   percentile_colors:
-    description: 'WoW colors for the percentiles'
+    description: 'Colors for the percentiles'
     required: false
     default: 'false'
   percentile_rankings:
-    description: 'Display the percentile rankings'
+    description: 'Display the percentile rankings as a Markdown table'
     required: false
     default: 'false'
   percentile_color_100:
