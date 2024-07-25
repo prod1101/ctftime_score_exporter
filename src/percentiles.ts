@@ -65,9 +65,7 @@ export function calculatePercentileRanking(
   teams: number
 ): number {
   const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0)
-  if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
-    insert_percentile(percentile_rank)
-  }
+  insert_percentile(percentile_rank)
   return percentile_rank
 }
 
