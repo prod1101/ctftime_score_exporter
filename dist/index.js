@@ -25039,10 +25039,13 @@ async function run() {
             for (const competition of filtered_competitions) {
                 const place = competition.scores.find(score => score.team_id === team_id);
                 if (place !== undefined) {
-                    out += `  * ${competition.title} <span ${percentile_colors ? (0, utils_1.styleByRanking)(place.place, competition.scores.length) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
+                    const percentile_rank = (0, utils_1.calculatePercentileRanking)(place.place, competition.scores.length);
+                    out += `  * ${competition.title} <span ${percentile_colors ? (0, utils_1.styleByRanking)(percentile_rank) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
                 }
             }
         }
+        out += core.getInput('suffix');
+        out = (0, utils_1.printPercentileMarkdownTable)() + out;
         fs.writeFileSync(core.getInput('outfile_path'), out);
         core.exportVariable('scores', out);
     }
@@ -25057,14 +25060,42 @@ async function run() {
 /***/ }),
 
 /***/ 1314:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.percentiles = void 0;
 exports.range = range;
+exports.printPercentileMarkdownTable = printPercentileMarkdownTable;
+exports.printPercentiles = printPercentiles;
+exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
 // https://stackoverflow.com/a/8273091
+const core = __importStar(__nccwpck_require__(2186));
 function range(start, stop, step = 1) {
     if (typeof stop == 'undefined') {
         // one param defined
@@ -25080,8 +25111,57 @@ function range(start, stop, step = 1) {
     }
     return result;
 }
-function styleByRanking(placement, teams) {
-    const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0);
+exports.percentiles = {
+    '100': 0,
+    '99': 0,
+    '95': 0,
+    '75': 0,
+    '50': 0,
+    '25': 0
+};
+function printPercentileMarkdownTable() {
+    let ret = '';
+    ret += '| Percentile | Count |\n';
+    ret += '|------------|-------|\n';
+    for (const percentile in exports.percentiles) {
+        ret += `| ${percentile}th | ${exports.percentiles[percentile]} |\n`;
+    }
+    return ret;
+}
+function printPercentiles() {
+    let ret = '';
+    for (const percentile in exports.percentiles) {
+        ret += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> percentile: ${exports.percentiles[percentile]}\n`;
+    }
+    return ret;
+}
+function insert_percentile(percentile) {
+    if (percentile === 100) {
+        exports.percentiles['100']++;
+    }
+    else if (percentile >= 99) {
+        exports.percentiles['99']++;
+    }
+    else if (percentile >= 95) {
+        exports.percentiles['95']++;
+    }
+    else if (percentile >= 75) {
+        exports.percentiles['75']++;
+    }
+    else if (percentile >= 50) {
+        exports.percentiles['50']++;
+    }
+    else if (percentile >= 25) {
+        exports.percentiles['25']++;
+    }
+}
+function calculatePercentileRanking(placement, teams) {
+    return 100.0 - (100.0 / teams) * (placement - 1.0);
+}
+function styleByRanking(percentile_rank) {
+    if (core.getInput('percentile_ranking').toLowerCase() === 'true') {
+        insert_percentile(percentile_rank);
+    }
     if (percentile_rank === 100)
         return 'style="color:#e5cc80"';
     if (percentile_rank >= 99)

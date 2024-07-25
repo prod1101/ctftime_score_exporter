@@ -4,7 +4,12 @@ import {
   fetchTeamByTeamId,
   filterCompetitionsByTeamId
 } from './ctf-time-api'
-import { range, styleByRanking } from './utils'
+import {
+  calculatePercentileRanking,
+  printPercentileMarkdownTable,
+  range,
+  styleByRanking
+} from './utils'
 import * as fs from 'fs'
 
 /**
@@ -23,27 +28,36 @@ export async function run(): Promise<void> {
 
     const percentile_colors =
       core.getInput('percentile_colors').toLowerCase() === 'true'
-
     let out = core.getInput('prefix')
+
     for (const year of interesting_years) {
       out += `\n### ${year}\n`
       out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`
       out += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`
-      const competitions = await fetchCompetitionsFromYear(year)
 
+      const competitions = await fetchCompetitionsFromYear(year)
       const filtered_competitions = filterCompetitionsByTeamId(
         competitions,
         team_id
       )
+
       for (const competition of filtered_competitions) {
         const place = competition.scores.find(
           score => score.team_id === team_id
         )
         if (place !== undefined) {
-          out += `  * ${competition.title} <span ${percentile_colors ? styleByRanking(place.place, competition.scores.length) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
+          const percentile_rank = calculatePercentileRanking(
+            place.place,
+            competition.scores.length
+          )
+          out += `  * ${competition.title} <span ${percentile_colors ? styleByRanking(percentile_rank) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
         }
       }
     }
+
+    out += core.getInput('suffix')
+    out = printPercentileMarkdownTable() + out
+
     fs.writeFileSync(core.getInput('outfile_path'), out)
 
     core.exportVariable('scores', out)
