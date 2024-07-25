@@ -25045,7 +25045,7 @@ async function run() {
                 }
             }
         }
-        const output = `${core.getInput('prefix')}\n${(0, percentiles_1.printPercentileMarkdownTable)()}${comp_data}${core.getInput('suffix')}`;
+        const output = `${core.getInput('prefix')}\n${(0, percentiles_1.printPercentiles)()}${comp_data}${core.getInput('suffix')}`;
         fs.writeFileSync(core.getInput('outfile_path'), output);
         core.exportVariable('scores', output);
     }
@@ -25090,6 +25090,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.percentiles = void 0;
 exports.printPercentileMarkdownTable = printPercentileMarkdownTable;
+exports.printPercentileMarkdownTableInverse = printPercentileMarkdownTableInverse;
+exports.printPercentiles = printPercentiles;
 exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
 const core = __importStar(__nccwpck_require__(2186));
@@ -25102,18 +25104,36 @@ exports.percentiles = {
     '25': 0
 };
 function printPercentileMarkdownTable() {
-    let ret = '';
-    if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
-        ret += '| Percentile: | Count |\n';
-        ret += '|-------------|-------|\n';
-        ret += `| <span ${styleByRanking(100)}>100th</span> | ${exports.percentiles['100']} |\n`;
-        ret += `| <span ${styleByRanking(99)}>>99th</span> | ${exports.percentiles['99']} |\n`;
-        ret += `| <span ${styleByRanking(95)}>>95th</span> | ${exports.percentiles['95']} |\n`;
-        ret += `| <span ${styleByRanking(75)}>>75th</span> | ${exports.percentiles['75']} |\n`;
-        ret += `| <span ${styleByRanking(50)}>>50th</span> | ${exports.percentiles['50']} |\n`;
-        ret += `| <span ${styleByRanking(25)}>>25th</span> | ${exports.percentiles['25']} |\n`;
-    }
+    let ret = '| Percentile: | Count |\n';
+    ret += '|---|---|\n';
+    ret += `| <span ${styleByRanking(100)}>100th</span> | ${exports.percentiles['100']} |\n`;
+    ret += `| <span ${styleByRanking(99)}>>99th</span> | ${exports.percentiles['99']} |\n`;
+    ret += `| <span ${styleByRanking(95)}>>95th</span> | ${exports.percentiles['95']} |\n`;
+    ret += `| <span ${styleByRanking(75)}>>75th</span> | ${exports.percentiles['75']} |\n`;
+    ret += `| <span ${styleByRanking(50)}>>50th</span> | ${exports.percentiles['50']} |\n`;
+    ret += `| <span ${styleByRanking(25)}>>25th</span> | ${exports.percentiles['25']} |\n`;
     return ret;
+}
+function printPercentileMarkdownTableInverse() {
+    let line1 = '| Percentile: | ';
+    let line2 = '|---| ';
+    let line3 = '| Count | ';
+    for (const percentile in exports.percentiles) {
+        line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `;
+        line2 += '--- | ';
+        line3 += `${exports.percentiles[percentile]} | `;
+    }
+    return `${line1}\n${line2}\n${line3}`;
+}
+function printPercentiles() {
+    switch (core.getInput('percentile_rankings').toLowerCase()) {
+        case 'true':
+            return printPercentileMarkdownTable();
+        case 'transpose':
+            return printPercentileMarkdownTableInverse();
+        default:
+            return '';
+    }
 }
 function insert_percentile(percentile) {
     if (percentile === 100) {

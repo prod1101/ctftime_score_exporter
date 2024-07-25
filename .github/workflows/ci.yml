@@ -64,7 +64,7 @@ jobs:
           team_id: 8323
           outfile_path: ./scores.md
           percentile_colors: true
-          percentile_rankings: true
+          percentile_rankings: transpose
           prefix: |
             # Scores
 

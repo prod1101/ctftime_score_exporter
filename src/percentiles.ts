@@ -10,18 +10,38 @@ export const percentiles: { [key: string]: number } = {
 }
 
 export function printPercentileMarkdownTable(): string {
-  let ret = ''
-  if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
-    ret += '| Percentile: | Count |\n'
-    ret += '|-------------|-------|\n'
-    ret += `| <span ${styleByRanking(100)}>100th</span> | ${percentiles['100']} |\n`
-    ret += `| <span ${styleByRanking(99)}>>99th</span> | ${percentiles['99']} |\n`
-    ret += `| <span ${styleByRanking(95)}>>95th</span> | ${percentiles['95']} |\n`
-    ret += `| <span ${styleByRanking(75)}>>75th</span> | ${percentiles['75']} |\n`
-    ret += `| <span ${styleByRanking(50)}>>50th</span> | ${percentiles['50']} |\n`
-    ret += `| <span ${styleByRanking(25)}>>25th</span> | ${percentiles['25']} |\n`
-  }
+  let ret = '| Percentile: | Count |\n'
+  ret += '|---|---|\n'
+  ret += `| <span ${styleByRanking(100)}>100th</span> | ${percentiles['100']} |\n`
+  ret += `| <span ${styleByRanking(99)}>>99th</span> | ${percentiles['99']} |\n`
+  ret += `| <span ${styleByRanking(95)}>>95th</span> | ${percentiles['95']} |\n`
+  ret += `| <span ${styleByRanking(75)}>>75th</span> | ${percentiles['75']} |\n`
+  ret += `| <span ${styleByRanking(50)}>>50th</span> | ${percentiles['50']} |\n`
+  ret += `| <span ${styleByRanking(25)}>>25th</span> | ${percentiles['25']} |\n`
   return ret
+}
+
+export function printPercentileMarkdownTableInverse(): string {
+  let line1 = '| Percentile: | '
+  let line2 = '|---| '
+  let line3 = '| Count | '
+  for (const percentile in percentiles) {
+    line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `
+    line2 += '--- | '
+    line3 += `${percentiles[percentile]} | `
+  }
+  return `${line1}\n${line2}\n${line3}`
+}
+
+export function printPercentiles(): string {
+  switch (core.getInput('percentile_rankings').toLowerCase()) {
+    case 'true':
+      return printPercentileMarkdownTable()
+    case 'transpose':
+      return printPercentileMarkdownTableInverse()
+    default:
+      return ''
+  }
 }
 
 function insert_percentile(percentile: number): void {

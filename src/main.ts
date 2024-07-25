@@ -8,7 +8,7 @@ import {
 } from './ctf-time-api'
 import {
   calculatePercentileRanking,
-  printPercentileMarkdownTable,
+  printPercentiles,
   styleByRanking
 } from './percentiles'
 
@@ -55,7 +55,7 @@ export async function run(): Promise<void> {
       }
     }
 
-    const output = `${core.getInput('prefix')}\n${printPercentileMarkdownTable()}${comp_data}${core.getInput('suffix')}`
+    const output = `${core.getInput('prefix')}\n${printPercentiles()}${comp_data}${core.getInput('suffix')}`
 
     fs.writeFileSync(core.getInput('outfile_path'), output)
 
