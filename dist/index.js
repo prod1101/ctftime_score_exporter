@@ -25014,9 +25014,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
-const ctf_time_api_1 = __nccwpck_require__(2584);
-const utils_1 = __nccwpck_require__(1314);
 const fs = __importStar(__nccwpck_require__(7147));
+const utils_1 = __nccwpck_require__(1314);
+const ctf_time_api_1 = __nccwpck_require__(2584);
+const percentiles_1 = __nccwpck_require__(3741);
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -25029,22 +25030,22 @@ async function run() {
             .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
             .reverse();
         const percentile_colors = core.getInput('percentile_colors').toLowerCase() === 'true';
-        let out = '';
+        let comp_data = '';
         for (const year of interesting_years) {
-            out += `\n### ${year}\n`;
-            out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`;
-            out += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`;
+            comp_data += `\n### ${year}\n`;
+            comp_data += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`;
+            comp_data += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`;
             const competitions = await (0, ctf_time_api_1.fetchCompetitionsFromYear)(year);
             const filtered_competitions = (0, ctf_time_api_1.filterCompetitionsByTeamId)(competitions, team_id);
             for (const competition of filtered_competitions) {
                 const place = competition.scores.find(score => score.team_id === team_id);
                 if (place !== undefined) {
-                    const percentile_rank = (0, utils_1.calculatePercentileRanking)(place.place, competition.scores.length);
-                    out += `  * ${competition.title} <span ${percentile_colors ? (0, utils_1.styleByRanking)(percentile_rank) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
+                    const percentile_rank = (0, percentiles_1.calculatePercentileRanking)(place.place, competition.scores.length);
+                    comp_data += `  * ${competition.title} <span ${percentile_colors ? (0, percentiles_1.styleByRanking)(percentile_rank) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`;
                 }
             }
         }
-        const output = `${core.getInput('prefix')}\n${(0, utils_1.printPercentileMarkdownTable)()}${out}${core.getInput('suffix')}`;
+        const output = `${core.getInput('prefix')}\n${(0, percentiles_1.printPercentileMarkdownTable)()}${comp_data}${core.getInput('suffix')}`;
         fs.writeFileSync(core.getInput('outfile_path'), output);
         core.exportVariable('scores', output);
     }
@@ -25058,7 +25059,7 @@ async function run() {
 
 /***/ }),
 
-/***/ 1314:
+/***/ 3741:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -25088,28 +25089,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.percentiles = void 0;
-exports.range = range;
 exports.printPercentileMarkdownTable = printPercentileMarkdownTable;
 exports.printPercentiles = printPercentiles;
 exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
-// https://stackoverflow.com/a/8273091
 const core = __importStar(__nccwpck_require__(2186));
-function range(start, stop, step = 1) {
-    if (typeof stop == 'undefined') {
-        // one param defined
-        stop = start;
-        start = 0;
-    }
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
-        return [];
-    }
-    const result = [];
-    for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
-        result.push(i);
-    }
-    return result;
-}
 exports.percentiles = {
     '100': 0,
     '99': 0,
@@ -25186,6 +25170,33 @@ function styleByRanking(percentile_rank) {
     if (percentile_rank >= 25)
         return `style="color:${validateColorString(core.getInput('percentile_color_25'))}"`;
     return '';
+}
+
+
+/***/ }),
+
+/***/ 1314:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.range = range;
+// https://stackoverflow.com/a/8273091
+function range(start, stop, step = 1) {
+    if (typeof stop == 'undefined') {
+        // one param defined
+        stop = start;
+        start = 0;
+    }
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+        return [];
+    }
+    const result = [];
+    for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
+        result.push(i);
+    }
+    return result;
 }
 
 

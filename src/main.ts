@@ -1,4 +1,6 @@
 import * as core from '@actions/core'
+import * as fs from 'fs'
+import { range } from './utils'
 import {
   fetchCompetitionsFromYear,
   fetchTeamByTeamId,
@@ -7,10 +9,8 @@ import {
 import {
   calculatePercentileRanking,
   printPercentileMarkdownTable,
-  range,
   styleByRanking
-} from './utils'
-import * as fs from 'fs'
+} from './percentiles'
 
 /**
  * The main function for the action.
@@ -28,12 +28,12 @@ export async function run(): Promise<void> {
 
     const percentile_colors =
       core.getInput('percentile_colors').toLowerCase() === 'true'
-    let out = ''
+    let comp_data = ''
 
     for (const year of interesting_years) {
-      out += `\n### ${year}\n`
-      out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`
-      out += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`
+      comp_data += `\n### ${year}\n`
+      comp_data += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`
+      comp_data += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`
 
       const competitions = await fetchCompetitionsFromYear(year)
       const filtered_competitions = filterCompetitionsByTeamId(
@@ -50,12 +50,12 @@ export async function run(): Promise<void> {
             place.place,
             competition.scores.length
           )
-          out += `  * ${competition.title} <span ${percentile_colors ? styleByRanking(percentile_rank) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
+          comp_data += `  * ${competition.title} <span ${percentile_colors ? styleByRanking(percentile_rank) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
         }
       }
     }
 
-    const output = `${core.getInput('prefix')}\n${printPercentileMarkdownTable()}${out}${core.getInput('suffix')}`
+    const output = `${core.getInput('prefix')}\n${printPercentileMarkdownTable()}${comp_data}${core.getInput('suffix')}`
 
     fs.writeFileSync(core.getInput('outfile_path'), output)
 
