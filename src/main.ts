@@ -28,7 +28,7 @@ export async function run(): Promise<void> {
 
     const percentile_colors =
       core.getInput('percentile_colors').toLowerCase() === 'true'
-    let out = core.getInput('prefix')
+    let out = ''
 
     for (const year of interesting_years) {
       out += `\n### ${year}\n`
@@ -55,12 +55,15 @@ export async function run(): Promise<void> {
       }
     }
 
-    out += core.getInput('suffix')
-    out = printPercentileMarkdownTable() + out
+    const output =
+      core.getInput('prefix') +
+      printPercentileMarkdownTable() +
+      out +
+      core.getInput('suffix')
 
-    fs.writeFileSync(core.getInput('outfile_path'), out)
+    fs.writeFileSync(core.getInput('outfile_path'), output)
 
-    core.exportVariable('scores', out)
+    core.exportVariable('scores', output)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)

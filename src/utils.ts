@@ -31,10 +31,15 @@ export const percentiles: { [key: string]: number } = {
 
 export function printPercentileMarkdownTable(): string {
   let ret = ''
-  ret += '| Percentile | Count |\n'
-  ret += '|------------|-------|\n'
-  for (const percentile in percentiles) {
-    ret += `| ${percentile}th | ${percentiles[percentile]} |\n`
+  if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
+    ret += '| Percentile | Count |\n'
+    ret += '|------------|-------|\n'
+    ret += `| 100th | ${percentiles['100']} |\n`
+    ret += `| >99th | ${percentiles['99']} |\n`
+    ret += `| >95th | ${percentiles['95']} |\n`
+    ret += `| >75th | ${percentiles['75']} |\n`
+    ret += `| >50th | ${percentiles['50']} |\n`
+    ret += `| >25th | ${percentiles['25']} |\n`
   }
   return ret
 }
@@ -71,7 +76,7 @@ export function calculatePercentileRanking(
 }
 
 export function styleByRanking(percentile_rank: number): string {
-  if (core.getInput('percentile_ranking').toLowerCase() === 'true') {
+  if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
     insert_percentile(percentile_rank)
   }
   if (percentile_rank === 100) return 'style="color:#e5cc80"'

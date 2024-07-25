@@ -25029,7 +25029,7 @@ async function run() {
             .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
             .reverse();
         const percentile_colors = core.getInput('percentile_colors').toLowerCase() === 'true';
-        let out = core.getInput('prefix');
+        let out = '';
         for (const year of interesting_years) {
             out += `\n### ${year}\n`;
             out += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`;
@@ -25044,10 +25044,12 @@ async function run() {
                 }
             }
         }
-        out += core.getInput('suffix');
-        out = (0, utils_1.printPercentileMarkdownTable)() + out;
-        fs.writeFileSync(core.getInput('outfile_path'), out);
-        core.exportVariable('scores', out);
+        const output = core.getInput('prefix') +
+            (0, utils_1.printPercentileMarkdownTable)() +
+            out +
+            core.getInput('suffix');
+        fs.writeFileSync(core.getInput('outfile_path'), output);
+        core.exportVariable('scores', output);
     }
     catch (error) {
         // Fail the workflow run if an error occurs
@@ -25121,10 +25123,15 @@ exports.percentiles = {
 };
 function printPercentileMarkdownTable() {
     let ret = '';
-    ret += '| Percentile | Count |\n';
-    ret += '|------------|-------|\n';
-    for (const percentile in exports.percentiles) {
-        ret += `| ${percentile}th | ${exports.percentiles[percentile]} |\n`;
+    if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
+        ret += '| Percentile | Count |\n';
+        ret += '|------------|-------|\n';
+        ret += `| 100th | ${exports.percentiles['100']} |\n`;
+        ret += `| >99th | ${exports.percentiles['99']} |\n`;
+        ret += `| >95th | ${exports.percentiles['95']} |\n`;
+        ret += `| >75th | ${exports.percentiles['75']} |\n`;
+        ret += `| >50th | ${exports.percentiles['50']} |\n`;
+        ret += `| >25th | ${exports.percentiles['25']} |\n`;
     }
     return ret;
 }
@@ -25159,7 +25166,7 @@ function calculatePercentileRanking(placement, teams) {
     return 100.0 - (100.0 / teams) * (placement - 1.0);
 }
 function styleByRanking(percentile_rank) {
-    if (core.getInput('percentile_ranking').toLowerCase() === 'true') {
+    if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
         insert_percentile(percentile_rank);
     }
     if (percentile_rank === 100)
