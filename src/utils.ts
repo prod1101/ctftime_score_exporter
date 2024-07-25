@@ -72,13 +72,14 @@ export function calculatePercentileRanking(
   placement: number,
   teams: number
 ): number {
-  return 100.0 - (100.0 / teams) * (placement - 1.0)
-}
-
-export function styleByRanking(percentile_rank: number): string {
+  const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0)
   if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
     insert_percentile(percentile_rank)
   }
+  return percentile_rank
+}
+
+export function styleByRanking(percentile_rank: number): string {
   if (percentile_rank === 100) return 'style="color:#e5cc80"'
   if (percentile_rank >= 99) return 'style="color:#e268a8"'
   if (percentile_rank >= 95) return 'style="color:#ff8000"'

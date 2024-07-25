@@ -25160,12 +25160,13 @@ function insert_percentile(percentile) {
     }
 }
 function calculatePercentileRanking(placement, teams) {
-    return 100.0 - (100.0 / teams) * (placement - 1.0);
-}
-function styleByRanking(percentile_rank) {
+    const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0);
     if (core.getInput('percentile_rankings').toLowerCase() === 'true') {
         insert_percentile(percentile_rank);
     }
+    return percentile_rank;
+}
+function styleByRanking(percentile_rank) {
     if (percentile_rank === 100)
         return 'style="color:#e5cc80"';
     if (percentile_rank >= 99)
