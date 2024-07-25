@@ -24,6 +24,10 @@ inputs:
     description: 'Text to append to the scores'
     required: false
     default: ''
+  percentile_colors:
+    description: 'WoW colors for the percentiles'
+    required: false
+    default: 'false'
 
 outputs:
   scores:

@@ -4,7 +4,7 @@ import {
   fetchTeamByTeamId,
   filterCompetitionsByTeamId
 } from './ctf-time-api'
-import { range } from './utils'
+import {range, styleByRanking} from './utils'
 import * as fs from 'fs'
 
 /**
@@ -20,6 +20,9 @@ export async function run(): Promise<void> {
         year => team_data.rating[year.toString()].rating_points !== undefined
       )
       .reverse()
+
+    const percentile_colors =
+      core.getInput('percentile_colors').toLowerCase() === 'true'
 
     let out = core.getInput('prefix')
     for (const year of interesting_years) {
@@ -37,7 +40,7 @@ export async function run(): Promise<void> {
           score => score.team_id === team_id
         )
         if (place !== undefined) {
-          out += `  * ${competition.title} <span class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
+          out += `  * ${competition.title} <span ${percentile_colors ? styleByRanking(place.place, competition.scores.length) : ''} class="discreet">(place ${place.place} of ${competition.scores.length})</span>\n`
         }
       }
     }
