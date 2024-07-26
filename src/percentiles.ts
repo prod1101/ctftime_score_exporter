@@ -24,7 +24,7 @@ export function printPercentileMarkdownTable(): string {
 export function printPercentileMarkdownTableInverse(): string {
   let line1 = '| Percentile: | '
   let line2 = '|---| '
-  let line3 = '| Count | '
+  let line3 = '| Count: | '
   for (const percentile in percentiles) {
     line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `
     line2 += '--- | '
