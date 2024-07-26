@@ -64,7 +64,13 @@ jobs:
           team_id: 8323
           outfile_path: ./scores.md
           percentile_colors: true
-          percentile_rankings: true
+          percentile_rankings: transpose
+          percentile_color_100: '#FF0000'
+          percentile_color_99: '#EA5E00'
+          percentile_color_95: '#F8ED62'
+          percentile_color_75: '#00B500'
+          percentile_color_50: '#01E5F0'
+          percentile_color_25: '#0033FF'
           prefix: |
             # Scores
 
