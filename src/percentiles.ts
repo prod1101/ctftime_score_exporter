@@ -9,7 +9,7 @@ export const percentiles: { [key: string]: number } = {
   '25': 0
 }
 
-function printPercentileMarkdownTable(): string {
+function printPercentile(): string {
   let ret = '| Percentile: | Count |\n'
   ret += '|---:|:---|\n'
   ret += `| <span ${styleByRanking(100)}>100th</span> | ${percentiles['100']} |\n`
@@ -21,10 +21,10 @@ function printPercentileMarkdownTable(): string {
   return ret
 }
 
-function printPercentileMarkdownTableTranspose(): string {
-  let line1 = '| Percentile: | '
+function printPercentileTranspose(): string {
+  let line1 = '| Percentile > | '
   let line2 = '| ---: | '
-  let line3 = '| Count: | '
+  let line3 = '| Count > | '
   for (const percentile in percentiles) {
     line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `
     line2 += ':---: | '
@@ -33,7 +33,7 @@ function printPercentileMarkdownTableTranspose(): string {
   return `${line1}\n${line2}\n${line3}`
 }
 
-function printTopPercentMarkdownTable(): string {
+function printTopPercent(): string {
   let ret = '| Top %: | Count |\n'
   ret += '|---:|:---|\n'
   ret += `| <span ${styleByRanking(100)}>Winner</span>> | ${percentiles['100']} |\n`
@@ -45,7 +45,7 @@ function printTopPercentMarkdownTable(): string {
   return ret
 }
 
-function printTopPercentMarkdownTableTranspose(): string {
+function printTopPercentTranspose(): string {
   let line1 = '| Top % > | '
   let line2 = '| ---: | '
   let line3 = '| Count > | '
@@ -64,13 +64,13 @@ function printTopPercentMarkdownTableTranspose(): string {
 export function printPercentiles(): string {
   switch (core.getInput('percentile_rankings').toLowerCase()) {
     case 'true':
-      return printPercentileMarkdownTable()
+      return printPercentile()
     case 'transpose':
-      return printPercentileMarkdownTableTranspose()
+      return printPercentileTranspose()
     case 'top':
-      return printTopPercentMarkdownTable()
+      return printTopPercent()
     case 'top_transpose':
-      return printTopPercentMarkdownTableTranspose()
+      return printTopPercentTranspose()
     default:
       return ''
   }
