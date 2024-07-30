@@ -23,11 +23,11 @@ function printPercentileMarkdownTable(): string {
 
 function printPercentileMarkdownTableTranspose(): string {
   let line1 = '| Percentile: | '
-  let line2 = '| ---: | : '
+  let line2 = '| ---: | '
   let line3 = '| Count: | '
   for (const percentile in percentiles) {
     line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `
-    line2 += '---: | '
+    line2 += ':---: | '
     line3 += `${percentiles[percentile]} | `
   }
   return `${line1}\n${line2}\n${line3}`
@@ -47,7 +47,7 @@ function printTopPercentMarkdownTable(): string {
 
 function printTopPercentMarkdownTableTranspose(): string {
   let line1 = '| Top %: | '
-  let line2 = '| ---: | : '
+  let line2 = '| ---: | '
   let line3 = '| Count: | '
   for (const percentile in percentiles) {
     if (parseInt(percentile) === 100) {
@@ -55,8 +55,8 @@ function printTopPercentMarkdownTableTranspose(): string {
     } else {
       line1 += `<span ${styleByRanking(parseInt(percentile))}>Top${percentile}%</span> | `
     }
-    line2 += '---: | '
-    line3 += `${percentiles[percentile]} | `
+    line2 += ':---: | '
+    line3 += `${percentiles[percentile]} |`
   }
   return `${line1}\n${line2}\n${line3}`
 }
