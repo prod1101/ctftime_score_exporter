@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 
-export const percentiles: { [key: string]: number } = {
+const percentiles: { [key: string]: number } = {
   '100': 0,
   '99': 0,
   '95': 0,
@@ -9,6 +9,47 @@ export const percentiles: { [key: string]: number } = {
   '25': 0
 }
 
+export function printPercentiles(): string {
+  switch (core.getInput('percentile_rankings').toLowerCase()) {
+    case 'true':
+      return printPercentile()
+    case 'transpose':
+      return printPercentileTranspose()
+    case 'top':
+      return printTopPercent()
+    case 'top_transpose':
+      return printTopPercentTranspose()
+    default:
+      return ''
+  }
+}
+
+export function calculatePercentileRanking(
+  placement: number,
+  teams: number
+): number {
+  const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0)
+  insert_percentile(percentile_rank)
+  return percentile_rank
+}
+
+export function styleByRanking(percentile_rank: number): string {
+  if (percentile_rank === 100)
+    return `style="color:${validateColorString(core.getInput('percentile_color_100'))}"`
+  if (percentile_rank >= 99)
+    return `style="color:${validateColorString(core.getInput('percentile_color_99'))}"`
+  if (percentile_rank >= 95)
+    return `style="color:${validateColorString(core.getInput('percentile_color_95'))}"`
+  if (percentile_rank >= 75)
+    return `style="color:${validateColorString(core.getInput('percentile_color_75'))}"`
+  if (percentile_rank >= 50)
+    return `style="color:${validateColorString(core.getInput('percentile_color_50'))}"`
+  if (percentile_rank >= 25)
+    return `style="color:${validateColorString(core.getInput('percentile_color_25'))}"`
+  return ''
+}
+
+/// Private functions
 function printPercentile(): string {
   let ret = '| Percentile: | Count |\n'
   ret += '|---:|:---|\n'
@@ -61,21 +102,6 @@ function printTopPercentTranspose(): string {
   return `${line1}\n${line2}\n${line3}`
 }
 
-export function printPercentiles(): string {
-  switch (core.getInput('percentile_rankings').toLowerCase()) {
-    case 'true':
-      return printPercentile()
-    case 'transpose':
-      return printPercentileTranspose()
-    case 'top':
-      return printTopPercent()
-    case 'top_transpose':
-      return printTopPercentTranspose()
-    default:
-      return ''
-  }
-}
-
 function insert_percentile(percentile: number): void {
   if (percentile === 100) {
     percentiles['100']++
@@ -92,15 +118,6 @@ function insert_percentile(percentile: number): void {
   }
 }
 
-export function calculatePercentileRanking(
-  placement: number,
-  teams: number
-): number {
-  const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0)
-  insert_percentile(percentile_rank)
-  return percentile_rank
-}
-
 function validateColorString(s: string): string {
   if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
     throw new Error(
@@ -108,20 +125,4 @@ function validateColorString(s: string): string {
     )
   }
   return s
-}
-
-export function styleByRanking(percentile_rank: number): string {
-  if (percentile_rank === 100)
-    return `style="color:${validateColorString(core.getInput('percentile_color_100'))}"`
-  if (percentile_rank >= 99)
-    return `style="color:${validateColorString(core.getInput('percentile_color_99'))}"`
-  if (percentile_rank >= 95)
-    return `style="color:${validateColorString(core.getInput('percentile_color_95'))}"`
-  if (percentile_rank >= 75)
-    return `style="color:${validateColorString(core.getInput('percentile_color_75'))}"`
-  if (percentile_rank >= 50)
-    return `style="color:${validateColorString(core.getInput('percentile_color_50'))}"`
-  if (percentile_rank >= 25)
-    return `style="color:${validateColorString(core.getInput('percentile_color_25'))}"`
-  return ''
 }
