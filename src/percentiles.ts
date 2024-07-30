@@ -46,9 +46,9 @@ function printTopPercentMarkdownTable(): string {
 }
 
 function printTopPercentMarkdownTableTranspose(): string {
-  let line1 = '| Top %: | '
+  let line1 = '| Top % > | '
   let line2 = '| ---: | '
-  let line3 = '| Count: | '
+  let line3 = '| Count > | '
   for (const percentile in percentiles) {
     if (parseInt(percentile) === 100) {
       line1 += `<span ${styleByRanking(parseInt(percentile))}>Winner</span> | `

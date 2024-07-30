@@ -25135,9 +25135,9 @@ function printTopPercentMarkdownTable() {
     return ret;
 }
 function printTopPercentMarkdownTableTranspose() {
-    let line1 = '| Top %: | ';
+    let line1 = '| Top % > | ';
     let line2 = '| ---: | ';
-    let line3 = '| Count: | ';
+    let line3 = '| Count > | ';
     for (const percentile in exports.percentiles) {
         if (parseInt(percentile) === 100) {
             line1 += `<span ${styleByRanking(parseInt(percentile))}>Winner</span> | `;
