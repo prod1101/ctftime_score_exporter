@@ -25129,13 +25129,24 @@ function printPercentileMarkdownTableTranspose() {
 function printTopPercentMarkdownTable() {
     let ret = '| Top %: | Count |\n';
     ret += '|---|---|\n';
-    ret += `| <span ${styleByRanking(100)}>Winner</span> | ${exports.percentiles['100']} |\n`;
-    ret += `| <span ${styleByRanking(99)}>Top 99%</span> | ${exports.percentiles['99']} |\n`;
-    ret += `| <span ${styleByRanking(95)}>Top 95%</span> | ${exports.percentiles['95']} |\n`;
-    ret += `| <span ${styleByRanking(75)}>Top 75%</span> | ${exports.percentiles['75']} |\n`;
-    ret += `| <span ${styleByRanking(50)}>Top 50%</span> | ${exports.percentiles['50']} |\n`;
-    ret += `| <span ${styleByRanking(25)}>Top 25%</span> | ${exports.percentiles['25']} |\n`;
+    ret += `| <span ${styleByRanking(100)}>Winner</span>> | ${exports.percentiles['100']} |\n`;
+    ret += `| <span ${styleByRanking(99)}>Top 99%</span>> | ${exports.percentiles['99']} |\n`;
+    ret += `| <span ${styleByRanking(95)}>Top 95%</span>> | ${exports.percentiles['95']} |\n`;
+    ret += `| <span ${styleByRanking(75)}>Top 75%</span>> | ${exports.percentiles['75']} |\n`;
+    ret += `| <span ${styleByRanking(50)}>Top 50%</span>> | ${exports.percentiles['50']} |\n`;
+    ret += `| <span ${styleByRanking(25)}>Top 25%</span>> | ${exports.percentiles['25']} |\n`;
     return ret;
+}
+function printTopPercentMarkdownTableTranspose() {
+    let line1 = '| Top %: | ';
+    let line2 = '|---| ';
+    let line3 = '| Count: | ';
+    for (const percentile in exports.percentiles) {
+        line1 += `<span ${styleByRanking(parseInt(percentile))}>Top ${percentile}%</span> | `;
+        line2 += '--- | ';
+        line3 += `${exports.percentiles[percentile]} | `;
+    }
+    return `${line1}\n${line2}\n${line3}`;
 }
 function printPercentiles() {
     switch (core.getInput('percentile_rankings').toLowerCase()) {
@@ -25145,6 +25156,8 @@ function printPercentiles() {
             return printPercentileMarkdownTableTranspose();
         case 'top':
             return printTopPercentMarkdownTable();
+        case 'top_transpose':
+            return printTopPercentMarkdownTableTranspose();
         default:
             return '';
     }

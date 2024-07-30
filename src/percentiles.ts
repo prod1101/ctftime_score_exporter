@@ -36,13 +36,25 @@ export function printPercentileMarkdownTableTranspose(): string {
 export function printTopPercentMarkdownTable(): string {
   let ret = '| Top %: | Count |\n'
   ret += '|---|---|\n'
-  ret += `| <span ${styleByRanking(100)}>Winner</span> | ${percentiles['100']} |\n`
-  ret += `| <span ${styleByRanking(99)}>Top 99%</span> | ${percentiles['99']} |\n`
-  ret += `| <span ${styleByRanking(95)}>Top 95%</span> | ${percentiles['95']} |\n`
-  ret += `| <span ${styleByRanking(75)}>Top 75%</span> | ${percentiles['75']} |\n`
-  ret += `| <span ${styleByRanking(50)}>Top 50%</span> | ${percentiles['50']} |\n`
-  ret += `| <span ${styleByRanking(25)}>Top 25%</span> | ${percentiles['25']} |\n`
+  ret += `| <span ${styleByRanking(100)}>Winner</span>> | ${percentiles['100']} |\n`
+  ret += `| <span ${styleByRanking(99)}>Top 99%</span>> | ${percentiles['99']} |\n`
+  ret += `| <span ${styleByRanking(95)}>Top 95%</span>> | ${percentiles['95']} |\n`
+  ret += `| <span ${styleByRanking(75)}>Top 75%</span>> | ${percentiles['75']} |\n`
+  ret += `| <span ${styleByRanking(50)}>Top 50%</span>> | ${percentiles['50']} |\n`
+  ret += `| <span ${styleByRanking(25)}>Top 25%</span>> | ${percentiles['25']} |\n`
   return ret
+}
+
+function printTopPercentMarkdownTableTranspose(): string {
+  let line1 = '| Top %: | '
+  let line2 = '|---| '
+  let line3 = '| Count: | '
+  for (const percentile in percentiles) {
+    line1 += `<span ${styleByRanking(parseInt(percentile))}>Top ${percentile}%</span> | `
+    line2 += '--- | '
+    line3 += `${percentiles[percentile]} | `
+  }
+  return `${line1}\n${line2}\n${line3}`
 }
 
 export function printPercentiles(): string {
@@ -53,6 +65,8 @@ export function printPercentiles(): string {
       return printPercentileMarkdownTableTranspose()
     case 'top':
       return printTopPercentMarkdownTable()
+    case 'top_transpose':
+      return printTopPercentMarkdownTableTranspose()
     default:
       return ''
   }
