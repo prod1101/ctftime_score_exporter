@@ -66,11 +66,11 @@ function printTopPercent(): string {
   let ret = '| Top % : | Count |\n'
   ret += '|---:|---:|\n'
   ret += `| <span ${styleByRanking(100)}>Winner</span>: | ${percentiles['100']} |\n`
-  ret += `| <span ${styleByRanking(99)}>Top 99%</span>: | ${percentiles['99']} |\n`
-  ret += `| <span ${styleByRanking(95)}>Top 95%</span>: | ${percentiles['95']} |\n`
-  ret += `| <span ${styleByRanking(75)}>Top 75%</span>: | ${percentiles['75']} |\n`
-  ret += `| <span ${styleByRanking(50)}>Top 50%</span>: | ${percentiles['50']} |\n`
-  ret += `| <span ${styleByRanking(25)}>Top 25%</span>: | ${percentiles['25']} |\n`
+  ret += `| <span ${styleByRanking(99)}>Top99%</span>: | ${percentiles['99']} |\n`
+  ret += `| <span ${styleByRanking(95)}>Top95%</span>: | ${percentiles['95']} |\n`
+  ret += `| <span ${styleByRanking(75)}>Top75%</span>: | ${percentiles['75']} |\n`
+  ret += `| <span ${styleByRanking(50)}>Top50%</span>: | ${percentiles['50']} |\n`
+  ret += `| <span ${styleByRanking(25)}>Top25%</span>: | ${percentiles['25']} |\n`
   return ret
 }
 
