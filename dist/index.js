@@ -25090,7 +25090,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.percentiles = void 0;
 exports.printPercentileMarkdownTable = printPercentileMarkdownTable;
-exports.printPercentileMarkdownTableInverse = printPercentileMarkdownTableInverse;
+exports.printPercentileMarkdownTableTranspose = printPercentileMarkdownTableTranspose;
+exports.printTopPercentMarkdownTable = printTopPercentMarkdownTable;
 exports.printPercentiles = printPercentiles;
 exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
@@ -25114,7 +25115,7 @@ function printPercentileMarkdownTable() {
     ret += `| <span ${styleByRanking(25)}>>25th</span> | ${exports.percentiles['25']} |\n`;
     return ret;
 }
-function printPercentileMarkdownTableInverse() {
+function printPercentileMarkdownTableTranspose() {
     let line1 = '| Percentile: | ';
     let line2 = '|---| ';
     let line3 = '| Count: | ';
@@ -25125,12 +25126,25 @@ function printPercentileMarkdownTableInverse() {
     }
     return `${line1}\n${line2}\n${line3}`;
 }
+function printTopPercentMarkdownTable() {
+    let ret = '| Top %: | Count |\n';
+    ret += '|---|---|\n';
+    ret += `| <span ${styleByRanking(100)}>Winner</span> | ${exports.percentiles['100']} |\n`;
+    ret += `| <span ${styleByRanking(99)}>Top 99%</span> | ${exports.percentiles['99']} |\n`;
+    ret += `| <span ${styleByRanking(95)}>Top 95%</span> | ${exports.percentiles['95']} |\n`;
+    ret += `| <span ${styleByRanking(75)}>Top 75%</span> | ${exports.percentiles['75']} |\n`;
+    ret += `| <span ${styleByRanking(50)}>Top 50%</span> | ${exports.percentiles['50']} |\n`;
+    ret += `| <span ${styleByRanking(25)}>Top 25%</span> | ${exports.percentiles['25']} |\n`;
+    return ret;
+}
 function printPercentiles() {
     switch (core.getInput('percentile_rankings').toLowerCase()) {
         case 'true':
             return printPercentileMarkdownTable();
         case 'transpose':
-            return printPercentileMarkdownTableInverse();
+            return printPercentileMarkdownTableTranspose();
+        case 'top':
+            return printTopPercentMarkdownTable();
         default:
             return '';
     }

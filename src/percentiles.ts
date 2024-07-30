@@ -21,7 +21,7 @@ export function printPercentileMarkdownTable(): string {
   return ret
 }
 
-export function printPercentileMarkdownTableInverse(): string {
+export function printPercentileMarkdownTableTranspose(): string {
   let line1 = '| Percentile: | '
   let line2 = '|---| '
   let line3 = '| Count: | '
@@ -33,12 +33,26 @@ export function printPercentileMarkdownTableInverse(): string {
   return `${line1}\n${line2}\n${line3}`
 }
 
+export function printTopPercentMarkdownTable(): string {
+  let ret = '| Top %: | Count |\n'
+  ret += '|---|---|\n'
+  ret += `| <span ${styleByRanking(100)}>Winner</span> | ${percentiles['100']} |\n`
+  ret += `| <span ${styleByRanking(99)}>Top 99%</span> | ${percentiles['99']} |\n`
+  ret += `| <span ${styleByRanking(95)}>Top 95%</span> | ${percentiles['95']} |\n`
+  ret += `| <span ${styleByRanking(75)}>Top 75%</span> | ${percentiles['75']} |\n`
+  ret += `| <span ${styleByRanking(50)}>Top 50%</span> | ${percentiles['50']} |\n`
+  ret += `| <span ${styleByRanking(25)}>Top 25%</span> | ${percentiles['25']} |\n`
+  return ret
+}
+
 export function printPercentiles(): string {
   switch (core.getInput('percentile_rankings').toLowerCase()) {
     case 'true':
       return printPercentileMarkdownTable()
     case 'transpose':
-      return printPercentileMarkdownTableInverse()
+      return printPercentileMarkdownTableTranspose()
+    case 'top':
+      return printTopPercentMarkdownTable()
     default:
       return ''
   }
