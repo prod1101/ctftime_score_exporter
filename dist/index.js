@@ -25964,14 +25964,25 @@ function styleByRanking(percentile_rank) {
 }
 /// Private functions
 function printPercentile() {
-    let ret = '| Percentile: | Count |\n';
-    ret += '|---:|:---|\n';
-    ret += `| <span ${styleByRanking(100)}>100th</span> | ${percentiles['100']} |\n`;
-    ret += `| <span ${styleByRanking(99)}>>99th</span> | ${percentiles['99']} |\n`;
-    ret += `| <span ${styleByRanking(95)}>>95th</span> | ${percentiles['95']} |\n`;
-    ret += `| <span ${styleByRanking(75)}>>75th</span> | ${percentiles['75']} |\n`;
-    ret += `| <span ${styleByRanking(50)}>>50th</span> | ${percentiles['50']} |\n`;
-    ret += `| <span ${styleByRanking(25)}>>25th</span> | ${percentiles['25']} |\n`;
+    let ret = '| PC : | Count |\n';
+    ret += '|---:|---:|\n';
+    ret += `| <span ${styleByRanking(100)}>100th</span>: | ${percentiles['100']} |\n`;
+    ret += `| <span ${styleByRanking(99)}>>99th</span>: | ${percentiles['99']} |\n`;
+    ret += `| <span ${styleByRanking(95)}>>95th</span>: | ${percentiles['95']} |\n`;
+    ret += `| <span ${styleByRanking(75)}>>75th</span>: | ${percentiles['75']} |\n`;
+    ret += `| <span ${styleByRanking(50)}>>50th</span>: | ${percentiles['50']} |\n`;
+    ret += `| <span ${styleByRanking(25)}>>25th</span>: | ${percentiles['25']} |\n`;
+    return ret;
+}
+function printTopPercent() {
+    let ret = '| Top % : | Count |\n';
+    ret += '|---:|---:|\n';
+    ret += `| <span ${styleByRanking(100)}>Winner</span>: | ${percentiles['100']} |\n`;
+    ret += `| <span ${styleByRanking(99)}>Top 99%</span>: | ${percentiles['99']} |\n`;
+    ret += `| <span ${styleByRanking(95)}>Top 95%</span>: | ${percentiles['95']} |\n`;
+    ret += `| <span ${styleByRanking(75)}>Top 75%</span>: | ${percentiles['75']} |\n`;
+    ret += `| <span ${styleByRanking(50)}>Top 50%</span>: | ${percentiles['50']} |\n`;
+    ret += `| <span ${styleByRanking(25)}>Top 25%</span>: | ${percentiles['25']} |\n`;
     return ret;
 }
 function printPercentileTranspose() {
@@ -25984,17 +25995,6 @@ function printPercentileTranspose() {
         line3 += `${percentiles[percentile]} | `;
     }
     return `${line1}\n${line2}\n${line3}`;
-}
-function printTopPercent() {
-    let ret = '| Top %: | Count |\n';
-    ret += '|---:|:---|\n';
-    ret += `| <span ${styleByRanking(100)}>Winner</span>> | ${percentiles['100']} |\n`;
-    ret += `| <span ${styleByRanking(99)}>Top 99%</span>> | ${percentiles['99']} |\n`;
-    ret += `| <span ${styleByRanking(95)}>Top 95%</span>> | ${percentiles['95']} |\n`;
-    ret += `| <span ${styleByRanking(75)}>Top 75%</span>> | ${percentiles['75']} |\n`;
-    ret += `| <span ${styleByRanking(50)}>Top 50%</span>> | ${percentiles['50']} |\n`;
-    ret += `| <span ${styleByRanking(25)}>Top 25%</span>> | ${percentiles['25']} |\n`;
-    return ret;
 }
 function printTopPercentTranspose() {
     let line1 = '| Top % > | ';
