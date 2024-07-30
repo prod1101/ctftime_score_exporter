@@ -33,7 +33,7 @@ export async function run(): Promise<void> {
 
     for (const year of interesting_years) {
       comp_data += `\n### ${year}\n`
-      comp_data += `(Overall rating place: #${team_data.rating[year].rating_place}, Austria: #${team_data.rating[year].country_place})\n`
+      comp_data += `(Overall rating place: #${team_data.rating[year].rating_place}, ${team_data.country}: #${team_data.rating[year].country_place})\n`
       comp_data += `  <!-- place ${team_data.rating[year].rating_place} (${team_data.rating[year].rating_points}) -->\n`
 
       const competitions = await fetchCompetitionsFromYear(year)
