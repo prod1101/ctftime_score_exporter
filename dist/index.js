@@ -25089,9 +25089,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.percentiles = void 0;
-exports.printPercentileMarkdownTable = printPercentileMarkdownTable;
-exports.printPercentileMarkdownTableTranspose = printPercentileMarkdownTableTranspose;
-exports.printTopPercentMarkdownTable = printTopPercentMarkdownTable;
 exports.printPercentiles = printPercentiles;
 exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
@@ -25106,7 +25103,7 @@ exports.percentiles = {
 };
 function printPercentileMarkdownTable() {
     let ret = '| Percentile: | Count |\n';
-    ret += '|---|---|\n';
+    ret += '|---:|:---|\n';
     ret += `| <span ${styleByRanking(100)}>100th</span> | ${exports.percentiles['100']} |\n`;
     ret += `| <span ${styleByRanking(99)}>>99th</span> | ${exports.percentiles['99']} |\n`;
     ret += `| <span ${styleByRanking(95)}>>95th</span> | ${exports.percentiles['95']} |\n`;
@@ -25117,18 +25114,18 @@ function printPercentileMarkdownTable() {
 }
 function printPercentileMarkdownTableTranspose() {
     let line1 = '| Percentile: | ';
-    let line2 = '|---| ';
+    let line2 = '| ---: | : ';
     let line3 = '| Count: | ';
     for (const percentile in exports.percentiles) {
         line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `;
-        line2 += '--- | ';
+        line2 += '---: | ';
         line3 += `${exports.percentiles[percentile]} | `;
     }
     return `${line1}\n${line2}\n${line3}`;
 }
 function printTopPercentMarkdownTable() {
     let ret = '| Top %: | Count |\n';
-    ret += '|---|---|\n';
+    ret += '|---:|:---|\n';
     ret += `| <span ${styleByRanking(100)}>Winner</span>> | ${exports.percentiles['100']} |\n`;
     ret += `| <span ${styleByRanking(99)}>Top 99%</span>> | ${exports.percentiles['99']} |\n`;
     ret += `| <span ${styleByRanking(95)}>Top 95%</span>> | ${exports.percentiles['95']} |\n`;
@@ -25139,11 +25136,16 @@ function printTopPercentMarkdownTable() {
 }
 function printTopPercentMarkdownTableTranspose() {
     let line1 = '| Top %: | ';
-    let line2 = '|---| ';
+    let line2 = '| ---: | : ';
     let line3 = '| Count: | ';
     for (const percentile in exports.percentiles) {
-        line1 += `<span ${styleByRanking(parseInt(percentile))}>Top ${percentile}%</span> | `;
-        line2 += '--- | ';
+        if (parseInt(percentile) === 100) {
+            line1 += `<span ${styleByRanking(parseInt(percentile))}>Winner</span> | `;
+        }
+        else {
+            line1 += `<span ${styleByRanking(parseInt(percentile))}>Top${percentile}%</span> | `;
+        }
+        line2 += '---: | ';
         line3 += `${exports.percentiles[percentile]} | `;
     }
     return `${line1}\n${line2}\n${line3}`;
@@ -25189,7 +25191,7 @@ function calculatePercentileRanking(placement, teams) {
 }
 function validateColorString(s) {
     if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
-        throw new Error(`Invalid color string: ${s}`);
+        throw new Error(`Invalid color string: "${s}". Did you use a valid hex color code? Don't forget to use '' around the color code! Otherwise, it will be interpreted as a comment. Correct Example: '#FF0000'`);
     }
     return s;
 }

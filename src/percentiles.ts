@@ -9,9 +9,9 @@ export const percentiles: { [key: string]: number } = {
   '25': 0
 }
 
-export function printPercentileMarkdownTable(): string {
+function printPercentileMarkdownTable(): string {
   let ret = '| Percentile: | Count |\n'
-  ret += '|---|---|\n'
+  ret += '|---:|:---|\n'
   ret += `| <span ${styleByRanking(100)}>100th</span> | ${percentiles['100']} |\n`
   ret += `| <span ${styleByRanking(99)}>>99th</span> | ${percentiles['99']} |\n`
   ret += `| <span ${styleByRanking(95)}>>95th</span> | ${percentiles['95']} |\n`
@@ -21,21 +21,21 @@ export function printPercentileMarkdownTable(): string {
   return ret
 }
 
-export function printPercentileMarkdownTableTranspose(): string {
+function printPercentileMarkdownTableTranspose(): string {
   let line1 = '| Percentile: | '
-  let line2 = '|---| '
+  let line2 = '| ---: | : '
   let line3 = '| Count: | '
   for (const percentile in percentiles) {
     line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `
-    line2 += '--- | '
+    line2 += '---: | '
     line3 += `${percentiles[percentile]} | `
   }
   return `${line1}\n${line2}\n${line3}`
 }
 
-export function printTopPercentMarkdownTable(): string {
+function printTopPercentMarkdownTable(): string {
   let ret = '| Top %: | Count |\n'
-  ret += '|---|---|\n'
+  ret += '|---:|:---|\n'
   ret += `| <span ${styleByRanking(100)}>Winner</span>> | ${percentiles['100']} |\n`
   ret += `| <span ${styleByRanking(99)}>Top 99%</span>> | ${percentiles['99']} |\n`
   ret += `| <span ${styleByRanking(95)}>Top 95%</span>> | ${percentiles['95']} |\n`
@@ -47,11 +47,15 @@ export function printTopPercentMarkdownTable(): string {
 
 function printTopPercentMarkdownTableTranspose(): string {
   let line1 = '| Top %: | '
-  let line2 = '|---| '
+  let line2 = '| ---: | : '
   let line3 = '| Count: | '
   for (const percentile in percentiles) {
-    line1 += `<span ${styleByRanking(parseInt(percentile))}>Top ${percentile}%</span> | `
-    line2 += '--- | '
+    if (parseInt(percentile) === 100) {
+      line1 += `<span ${styleByRanking(parseInt(percentile))}>Winner</span> | `
+    } else {
+      line1 += `<span ${styleByRanking(parseInt(percentile))}>Top${percentile}%</span> | `
+    }
+    line2 += '---: | '
     line3 += `${percentiles[percentile]} | `
   }
   return `${line1}\n${line2}\n${line3}`
@@ -99,7 +103,9 @@ export function calculatePercentileRanking(
 
 function validateColorString(s: string): string {
   if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
-    throw new Error(`Invalid color string: ${s}`)
+    throw new Error(
+      `Invalid color string: "${s}". Did you use a valid hex color code? Don't forget to use '' around the color code! Otherwise, it will be interpreted as a comment. Correct Example: '#FF0000'`
+    )
   }
   return s
 }
