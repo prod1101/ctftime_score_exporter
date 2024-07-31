@@ -83,7 +83,7 @@ function printPercentileTranspose(): string {
     line2 += ':---: | '
     line3 += `${percentiles[percentile]} | `
   }
-  return `${line1}\n${line2}\n${line3}`
+  return `${line1}\n${line2}\n${line3}\n`
 }
 
 function printTopPercentTranspose(): string {
@@ -99,7 +99,7 @@ function printTopPercentTranspose(): string {
     line2 += ':---: | '
     line3 += `${percentiles[percentile]} |`
   }
-  return `${line1}\n${line2}\n${line3}`
+  return `${line1}\n${line2}\n${line3}\n`
 }
 
 function insert_percentile(percentile: number): void {
