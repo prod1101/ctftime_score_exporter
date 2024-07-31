@@ -25987,13 +25987,13 @@ function printTopPercent() {
     return ret;
 }
 function printPercentileTranspose() {
-    let line1 = '| Percentile > | ';
-    let line2 = '| ---: | ';
-    let line3 = '| Count > | ';
+    let line1 = '| PCTL > |';
+    let line2 = '| ---: |';
+    let line3 = '| Count > |';
     for (const percentile in percentiles) {
-        line1 += `<span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> | `;
-        line2 += ':---: | ';
-        line3 += `${percentiles[percentile]} | `;
+        line1 += ` <span ${styleByRanking(parseInt(percentile))}>${percentile}th</span> |`;
+        line2 += ' :---: |';
+        line3 += ` ${percentiles[percentile]} |`;
     }
     return `${line1}\n${line2}\n${line3}\n`;
 }
