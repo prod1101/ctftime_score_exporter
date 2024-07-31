@@ -7,7 +7,6 @@ import {
 
 describe('percentiles.test.ts', () => {
   beforeEach(() => {
-    process.env['INPUT_PERCENTILE_COLOR'] = 'true'
     process.env['INPUT_PREFIX'] = ''
     process.env['INPUT_SUFFIX'] = ''
     process.env['INPUT_PERCENTILE_COLORS'] = 'false'
