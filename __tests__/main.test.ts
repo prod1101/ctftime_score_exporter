@@ -1,7 +1,14 @@
 import { expect } from '@jest/globals'
+import { run } from '../src/main'
+import { setupActionDefaultEnvironmentVariables } from '../src/misc'
 
 describe('main.ts', () => {
-  it('should run', async () => {
+  beforeEach(() => {
+    setupActionDefaultEnvironmentVariables()
+  })
+
+  it('Test normal execution', async () => {
+    await run()
     expect(true).toBe(true)
   })
 })
