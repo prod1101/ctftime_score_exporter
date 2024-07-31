@@ -53,24 +53,24 @@ export function styleByRanking(percentile_rank: number): string {
 function printPercentile(): string {
   let ret = '| PC : | Count |\n'
   ret += '|---:|---:|\n'
-  ret += `| <span ${styleByRanking(100)}>100th</span>: | ${percentiles['100']} |\n`
-  ret += `| <span ${styleByRanking(99)}>>99th</span>: | ${percentiles['99']} |\n`
-  ret += `| <span ${styleByRanking(95)}>>95th</span>: | ${percentiles['95']} |\n`
-  ret += `| <span ${styleByRanking(75)}>>75th</span>: | ${percentiles['75']} |\n`
-  ret += `| <span ${styleByRanking(50)}>>50th</span>: | ${percentiles['50']} |\n`
-  ret += `| <span ${styleByRanking(25)}>>25th</span>: | ${percentiles['25']} |\n`
+  const keys = Object.keys(percentiles).reverse()
+  for (const key of keys) {
+    ret += `| <span ${styleByRanking(parseInt(key))}>${key}th</span>: | ${percentiles[key]} |\n`
+  }
   return ret
 }
 
 function printTopPercent(): string {
   let ret = '| Top % : | Count |\n'
   ret += '|---:|---:|\n'
-  ret += `| <span ${styleByRanking(100)}>Winner</span>: | ${percentiles['100']} |\n`
-  ret += `| <span ${styleByRanking(99)}>Top99%</span>: | ${percentiles['99']} |\n`
-  ret += `| <span ${styleByRanking(95)}>Top95%</span>: | ${percentiles['95']} |\n`
-  ret += `| <span ${styleByRanking(75)}>Top75%</span>: | ${percentiles['75']} |\n`
-  ret += `| <span ${styleByRanking(50)}>Top50%</span>: | ${percentiles['50']} |\n`
-  ret += `| <span ${styleByRanking(25)}>Top25%</span>: | ${percentiles['25']} |\n`
+  const keys = Object.keys(percentiles).reverse()
+  for (const key of keys) {
+    if (parseInt(key) === 100) {
+      ret += `| <span ${styleByRanking(parseInt(key))}>Winner</span>: | ${percentiles[key]} |\n`
+    } else {
+      ret += `| <span ${styleByRanking(parseInt(key))}>Top${100 - parseInt(key)}%</span>: | ${percentiles[key]} |\n`
+    }
+  }
   return ret
 }
 
@@ -94,7 +94,7 @@ function printTopPercentTranspose(): string {
     if (parseInt(percentile) === 100) {
       line1 += `<span ${styleByRanking(parseInt(percentile))}>Winner</span> | `
     } else {
-      line1 += `<span ${styleByRanking(parseInt(percentile))}>Top${percentile}%</span> | `
+      line1 += `<span ${styleByRanking(parseInt(percentile))}>Top${100 - parseInt(percentile)}%</span> | `
     }
     line2 += ':---: | '
     line3 += `${percentiles[percentile]} |`
