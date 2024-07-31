@@ -87,17 +87,17 @@ function printPercentileTranspose(): string {
 }
 
 function printTopPercentTranspose(): string {
-  let line1 = '| Top % > | '
-  let line2 = '| ---: | '
-  let line3 = '| Count > | '
+  let line1 = '| Top % > |'
+  let line2 = '| ---: |'
+  let line3 = '| Count > |'
   for (const percentile in percentiles) {
     if (parseInt(percentile) === 100) {
-      line1 += `<span ${styleByRanking(parseInt(percentile))}>Winner</span> | `
+      line1 += ` <span ${styleByRanking(parseInt(percentile))}>Winner</span> |`
     } else {
-      line1 += `<span ${styleByRanking(parseInt(percentile))}>Top${100 - parseInt(percentile)}%</span> | `
+      line1 += ` <span ${styleByRanking(parseInt(percentile))}>Top${100 - parseInt(percentile)}%</span> |`
     }
-    line2 += ':---: | '
-    line3 += `${percentiles[percentile]} |`
+    line2 += ' :---: |'
+    line3 += ` ${percentiles[percentile]} |`
   }
   return `${line1}\n${line2}\n${line3}\n`
 }
