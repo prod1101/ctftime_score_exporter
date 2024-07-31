@@ -94,7 +94,7 @@ function printTopPercentTranspose(): string {
     if (parseInt(percentile) === 100) {
       line1 += ` <span ${styleByRanking(parseInt(percentile))}>Winner</span> |`
     } else {
-      line1 += ` <span ${styleByRanking(parseInt(percentile))}>Top${100 - parseInt(percentile)}%</span> |`
+      line1 += ` <span ${styleByRanking(parseInt(percentile))}>Top ${100 - parseInt(percentile)}%</span> |`
     }
     line2 += ' :---: |'
     line3 += ` ${percentiles[percentile]} |`
