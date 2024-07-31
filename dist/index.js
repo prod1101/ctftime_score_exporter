@@ -26052,11 +26052,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.range = range;
 // https://stackoverflow.com/a/8273091
 function range(start, stop, step = 1) {
-    if (typeof stop == 'undefined') {
-        // one param defined
-        stop = start;
-        start = 0;
-    }
     if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
         return [];
     }
