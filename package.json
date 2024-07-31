@@ -1,27 +1,27 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
-  "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "name": "ctftime-team-score-exporter",
+  "description": "CTFTime Team Score Exporter",
+  "version": "1.2.0",
+  "author": "prod1101",
+  "private": false,
+  "homepage": "https://github.com/prod1101/ctftime_score_exporter",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/prod1101/ctftime_score_exporter.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/prod1101/ctftime_score_exporter/issues"
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "ctf",
+    "ctftime"
   ],
   "exports": {
     ".": "./dist/index.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "bundle": "npm run format:write && npm run package",
