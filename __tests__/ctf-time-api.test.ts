@@ -100,18 +100,12 @@ describe('ctf-time-api.mock.ts', () => {
       competitions,
       team_id
     )
-    expect(filteredCompetitions).toEqual({
-      test: {
-        title: 'test',
-        scores: [
-          {
-            team_id: 0,
-            points: '0',
-            place: 0
-          }
-        ],
-        time: 0
+    expect(filteredCompetitions).toEqual([
+      {
+        scores: [{ place: 0, points: '0', team_id: 0 }],
+        time: 0,
+        title: 'test'
       }
-    })
+    ])
   })
 })
