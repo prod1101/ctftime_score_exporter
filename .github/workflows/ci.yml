@@ -60,7 +60,7 @@ jobs:
         id: test-action
         uses: ./
         with:
-          team_id: 8323
+          team_id: 1964
           outfile_path: ./scores.md
           percentile_colors: true
           percentile_rankings: top_transpose
