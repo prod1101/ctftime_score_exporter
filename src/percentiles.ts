@@ -51,7 +51,7 @@ export function styleByRanking(percentile_rank: number): string {
 
 /// Private functions
 function printPercentile(): string {
-  let ret = '| PC : | Count |\n'
+  let ret = '| PCTL : | Count |\n'
   ret += '|---:|---:|\n'
   const keys = Object.keys(percentiles).reverse()
   for (const key of keys) {
