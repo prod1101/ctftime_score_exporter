@@ -15,6 +15,10 @@ import countries from 'i18n-iso-countries'
 
 /**
  * The main function for the action.
+ *
+ * This function fetches team data and competition results, processes the data to
+ * calculate percentile rankings, and writes the results to an output file.
+ *
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 export async function run(): Promise<void> {

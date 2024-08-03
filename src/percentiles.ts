@@ -1,5 +1,9 @@
 import * as core from '@actions/core'
 
+/**
+ * An object representing the count of competitions in different percentile
+ * ranks of the team.
+ */
 const percentiles: { [key: string]: number } = {
   '100': 0,
   '99': 0,
@@ -9,6 +13,11 @@ const percentiles: { [key: string]: number } = {
   '25': 0
 }
 
+/**
+ * Generates the percentile rankings based on the input configuration.
+ *
+ * @returns A string representing the formatted percentile rankings.
+ */
 export function printPercentiles(): string {
   switch (core.getInput('percentile_rankings').toLowerCase()) {
     case 'true':
@@ -24,6 +33,13 @@ export function printPercentiles(): string {
   }
 }
 
+/**
+ * Calculates the percentile ranking for a given placement and number of teams.
+ *
+ * @param placement - The placement of the team.
+ * @param teams - The total number of teams.
+ * @returns The calculated percentile ranking.
+ */
 export function calculatePercentileRanking(
   placement: number,
   teams: number
@@ -33,6 +49,12 @@ export function calculatePercentileRanking(
   return percentile_rank
 }
 
+/**
+ * Styles the ranking based on the percentile rank.
+ *
+ * @param percentile_rank - The percentile rank to style.
+ * @returns A string representing the style attribute for the given percentile rank.
+ */
 export function styleByRanking(percentile_rank: number): string {
   if (percentile_rank === 100)
     return `style="color:${validateColorString(core.getInput('percentile_color_100'))}"`
@@ -49,7 +71,11 @@ export function styleByRanking(percentile_rank: number): string {
   return ''
 }
 
-/// Private functions
+/**
+ * Prints the percentile rankings in a table format.
+ *
+ * @returns A string representing the formatted percentile rankings table.
+ */
 function printPercentile(): string {
   let ret = '| PCTL : | Count |\n'
   ret += '|---:|---:|\n'
@@ -60,6 +86,11 @@ function printPercentile(): string {
   return ret
 }
 
+/**
+ * Prints the top percentile rankings in a table format.
+ *
+ * @returns A string representing the formatted top percentile rankings table.
+ */
 function printTopPercent(): string {
   let ret = '| Top % : | Count |\n'
   ret += '|---:|---:|\n'
@@ -74,6 +105,11 @@ function printTopPercent(): string {
   return ret
 }
 
+/**
+ * Prints the percentile rankings in a transposed table format.
+ *
+ * @returns A string representing the formatted transposed percentile rankings table.
+ */
 function printPercentileTranspose(): string {
   let line1 = '| PCTL > |'
   let line2 = '| ---: |'
@@ -86,6 +122,11 @@ function printPercentileTranspose(): string {
   return `${line1}\n${line2}\n${line3}\n`
 }
 
+/**
+ * Prints the top percentile rankings in a transposed table format.
+ *
+ * @returns A string representing the formatted transposed top percentile rankings table.
+ */
 function printTopPercentTranspose(): string {
   let line1 = '| Top % > |'
   let line2 = '| ---: |'
@@ -102,6 +143,11 @@ function printTopPercentTranspose(): string {
   return `${line1}\n${line2}\n${line3}\n`
 }
 
+/**
+ * Inserts the percentile rank into the percentiles object.
+ *
+ * @param percentile - The percentile rank to insert.
+ */
 function insert_percentile(percentile: number): void {
   if (percentile === 100) {
     percentiles['100']++
@@ -118,6 +164,13 @@ function insert_percentile(percentile: number): void {
   }
 }
 
+/**
+ * Validates if the given string is a valid hex color code.
+ *
+ * @param s - The string to validate.
+ * @returns The validated color string.
+ * @throws Error Will throw an error if the string is not a valid hex color code.
+ */
 function validateColorString(s: string): string {
   if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
     throw new Error(

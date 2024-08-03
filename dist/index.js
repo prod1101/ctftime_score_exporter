@@ -25771,6 +25771,13 @@ exports.fetchTeamByTeamId = fetchTeamByTeamId;
 exports.fetchCompetitionsFromYear = fetchCompetitionsFromYear;
 exports.filterCompetitionsByTeamId = filterCompetitionsByTeamId;
 const http = __importStar(__nccwpck_require__(6255));
+/**
+ * Fetches the details of a team by its team ID.
+ *
+ * @param team_id - The ID of the team to fetch details for.
+ * @returns A promise that resolves to the team details.
+ * @throws Error Will throw an error if no team is found for the given team ID.
+ */
 async function fetchTeamByTeamId(team_id) {
     const client = new http.HttpClient('CTFTime Crawler');
     const response = await client.getJson(`https://ctftime.org/api/v1/teams/${team_id}/`);
@@ -25779,6 +25786,13 @@ async function fetchTeamByTeamId(team_id) {
     }
     return response.result;
 }
+/**
+ * Fetches the competitions from a specific year.
+ *
+ * @param year - The year to fetch competitions for.
+ * @returns A promise that resolves to the competitions of the given year.
+ * @throws Error Will throw an error if no competition is found for the given year.
+ */
 async function fetchCompetitionsFromYear(year) {
     const client = new http.HttpClient('CTFTime Crawler');
     const response = await client.getJson(`https://ctftime.org/api/v1/results/${year}/`);
@@ -25787,6 +25801,13 @@ async function fetchCompetitionsFromYear(year) {
     }
     return response.result;
 }
+/**
+ * Filters competitions by a specific team ID.
+ *
+ * @param competitions - The competitions to filter.
+ * @param teamId - The team ID to filter competitions by.
+ * @returns An array of competitions that include the specified team ID.
+ */
 function filterCompetitionsByTeamId(competitions, teamId) {
     const filteredEntries = [];
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25842,6 +25863,10 @@ const percentiles_1 = __nccwpck_require__(3741);
 const i18n_iso_countries_1 = __importDefault(__nccwpck_require__(3771));
 /**
  * The main function for the action.
+ *
+ * This function fetches team data and competition results, processes the data to
+ * calculate percentile rankings, and writes the results to an output file.
+ *
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
@@ -25914,6 +25939,10 @@ exports.printPercentiles = printPercentiles;
 exports.calculatePercentileRanking = calculatePercentileRanking;
 exports.styleByRanking = styleByRanking;
 const core = __importStar(__nccwpck_require__(2186));
+/**
+ * An object representing the count of competitions in different percentile
+ * ranks of the team.
+ */
 const percentiles = {
     '100': 0,
     '99': 0,
@@ -25922,6 +25951,11 @@ const percentiles = {
     '50': 0,
     '25': 0
 };
+/**
+ * Generates the percentile rankings based on the input configuration.
+ *
+ * @returns A string representing the formatted percentile rankings.
+ */
 function printPercentiles() {
     switch (core.getInput('percentile_rankings').toLowerCase()) {
         case 'true':
@@ -25936,11 +25970,24 @@ function printPercentiles() {
             return '';
     }
 }
+/**
+ * Calculates the percentile ranking for a given placement and number of teams.
+ *
+ * @param placement - The placement of the team.
+ * @param teams - The total number of teams.
+ * @returns The calculated percentile ranking.
+ */
 function calculatePercentileRanking(placement, teams) {
     const percentile_rank = 100.0 - (100.0 / teams) * (placement - 1.0);
     insert_percentile(percentile_rank);
     return percentile_rank;
 }
+/**
+ * Styles the ranking based on the percentile rank.
+ *
+ * @param percentile_rank - The percentile rank to style.
+ * @returns A string representing the style attribute for the given percentile rank.
+ */
 function styleByRanking(percentile_rank) {
     if (percentile_rank === 100)
         return `style="color:${validateColorString(core.getInput('percentile_color_100'))}"`;
@@ -25956,7 +26003,11 @@ function styleByRanking(percentile_rank) {
         return `style="color:${validateColorString(core.getInput('percentile_color_25'))}"`;
     return '';
 }
-/// Private functions
+/**
+ * Prints the percentile rankings in a table format.
+ *
+ * @returns A string representing the formatted percentile rankings table.
+ */
 function printPercentile() {
     let ret = '| PCTL : | Count |\n';
     ret += '|---:|---:|\n';
@@ -25966,6 +26017,11 @@ function printPercentile() {
     }
     return ret;
 }
+/**
+ * Prints the top percentile rankings in a table format.
+ *
+ * @returns A string representing the formatted top percentile rankings table.
+ */
 function printTopPercent() {
     let ret = '| Top % : | Count |\n';
     ret += '|---:|---:|\n';
@@ -25980,6 +26036,11 @@ function printTopPercent() {
     }
     return ret;
 }
+/**
+ * Prints the percentile rankings in a transposed table format.
+ *
+ * @returns A string representing the formatted transposed percentile rankings table.
+ */
 function printPercentileTranspose() {
     let line1 = '| PCTL > |';
     let line2 = '| ---: |';
@@ -25991,6 +26052,11 @@ function printPercentileTranspose() {
     }
     return `${line1}\n${line2}\n${line3}\n`;
 }
+/**
+ * Prints the top percentile rankings in a transposed table format.
+ *
+ * @returns A string representing the formatted transposed top percentile rankings table.
+ */
 function printTopPercentTranspose() {
     let line1 = '| Top % > |';
     let line2 = '| ---: |';
@@ -26007,6 +26073,11 @@ function printTopPercentTranspose() {
     }
     return `${line1}\n${line2}\n${line3}\n`;
 }
+/**
+ * Inserts the percentile rank into the percentiles object.
+ *
+ * @param percentile - The percentile rank to insert.
+ */
 function insert_percentile(percentile) {
     if (percentile === 100) {
         percentiles['100']++;
@@ -26027,6 +26098,13 @@ function insert_percentile(percentile) {
         percentiles['25']++;
     }
 }
+/**
+ * Validates if the given string is a valid hex color code.
+ *
+ * @param s - The string to validate.
+ * @returns The validated color string.
+ * @throws Error Will throw an error if the string is not a valid hex color code.
+ */
 function validateColorString(s) {
     if (!s.match(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i)) {
         throw new Error(`Invalid color string: "${s}". Did you use a valid hex color code? Don't forget to use '' around the color code! Otherwise, it will be interpreted as a comment. Correct Example: '#FF0000'`);
@@ -26044,7 +26122,19 @@ function validateColorString(s) {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.range = range;
-// https://stackoverflow.com/a/8273091
+/**
+ * Reference: https://stackoverflow.com/a/8273091
+ * Generates an array of numbers in a specified range.
+ *
+ * This function creates an array of numbers starting from `start` up to, but not including, `stop`,
+ * incrementing by `step`. If the `step` is positive and `start` is greater than or equal to `stop`,
+ * or if the `step` is negative and `start` is less than or equal to `stop`, an empty array is returned.
+ *
+ * @param {number} start - The starting number of the range.
+ * @param {number} stop - The ending number of the range (exclusive).
+ * @param {number} [step=1] - The increment (or decrement) step between numbers in the range.
+ * @returns {number[]} An array of numbers in the specified range.
+ */
 function range(start, stop, step = 1) {
     if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
         return [];

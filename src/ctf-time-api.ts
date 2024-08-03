@@ -1,5 +1,8 @@
 import * as http from '@actions/http-client'
 
+/**
+ * Interface representing the rating details of a team.
+ */
 interface Rating {
   rating_place?: number
   organizer_points?: number
@@ -7,10 +10,16 @@ interface Rating {
   country_place?: number
 }
 
+/**
+ * Interface representing the rating of a team over multiple years.
+ */
 interface TeamRating {
   [year: string]: Rating
 }
 
+/**
+ * Interface representing the details of a team.
+ */
 interface TeamDetails {
   academic: boolean
   primary_alias: string
@@ -24,6 +33,13 @@ interface TeamDetails {
   aliases: string[]
 }
 
+/**
+ * Fetches the details of a team by its team ID.
+ *
+ * @param team_id - The ID of the team to fetch details for.
+ * @returns A promise that resolves to the team details.
+ * @throws Error Will throw an error if no team is found for the given team ID.
+ */
 export async function fetchTeamByTeamId(team_id: number): Promise<TeamDetails> {
   const client: http.HttpClient = new http.HttpClient('CTFTime Crawler')
   const response = await client.getJson<TeamDetails>(
@@ -35,22 +51,38 @@ export async function fetchTeamByTeamId(team_id: number): Promise<TeamDetails> {
   return response.result
 }
 
+/**
+ * Interface representing the score of a team in a competition.
+ */
 interface Score {
   team_id: number
   points: string
   place: number
 }
 
+/**
+ * Interface representing a competition.
+ */
 interface Competition {
   title: string
   scores: Score[]
   time: number
 }
 
+/**
+ * Interface representing multiple competitions.
+ */
 interface Competitions {
   [key: string]: Competition
 }
 
+/**
+ * Fetches the competitions from a specific year.
+ *
+ * @param year - The year to fetch competitions for.
+ * @returns A promise that resolves to the competitions of the given year.
+ * @throws Error Will throw an error if no competition is found for the given year.
+ */
 export async function fetchCompetitionsFromYear(
   year: number
 ): Promise<Competitions> {
@@ -64,6 +96,13 @@ export async function fetchCompetitionsFromYear(
   return response.result
 }
 
+/**
+ * Filters competitions by a specific team ID.
+ *
+ * @param competitions - The competitions to filter.
+ * @param teamId - The team ID to filter competitions by.
+ * @returns An array of competitions that include the specified team ID.
+ */
 export function filterCompetitionsByTeamId(
   competitions: Competitions,
   teamId: number

@@ -1,3 +1,12 @@
+/**
+ * Sets up the default environment variables for the action.
+ *
+ * This function initializes several environment variables with default values
+ * to be used by the action. These variables include settings for input prefix,
+ * suffix, percentile colors, and percentile rankings.
+ *
+ * Mainly used for testing purposes.
+ */
 export function setupActionDefaultEnvironmentVariables(): void {
   process.env['INPUT_PREFIX'] = ''
   process.env['INPUT_SUFFIX'] = ''
