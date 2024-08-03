@@ -26,8 +26,6 @@ export async function run(): Promise<void> {
         year => team_data.rating[year.toString()].rating_points !== undefined
       )
       .reverse()
-    console.log(team_data)
-    core.info(team_data.country)
     const percentile_colors =
       core.getInput('percentile_colors').toLowerCase() === 'true'
     let comp_data = ''

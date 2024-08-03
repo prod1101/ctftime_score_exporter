@@ -8,7 +8,7 @@ import {
 
 jest.mock('http')
 
-describe('ctf-time-api.mock.ts', () => {
+describe('ctf-time-api.test.ts', () => {
   it('Test no team found for team id', async () => {
     http.HttpClient.prototype.getJson = jest.fn().mockResolvedValue({
       result: null
