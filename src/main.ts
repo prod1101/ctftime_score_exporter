@@ -62,8 +62,8 @@ export async function run(): Promise<void> {
     const output = `${core.getInput('prefix')}\n${printPercentiles()}${comp_data}${core.getInput('suffix')}`
 
     fs.writeFileSync(core.getInput('outfile_path'), output)
-
     core.exportVariable('scores', output)
+    core.info(output)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
