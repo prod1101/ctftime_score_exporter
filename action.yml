@@ -1,11 +1,10 @@
 name: 'CTFTime Team Scores Exporter'
-description:
-  'Creates an Markdown overview file including the results of your team.'
+description: 'Export CTFTime team scores to a Markdown file'
 author: 'prod1101'
 
 branding:
   icon: 'flag'
-  color: 'red'
+  color: 'green'
 
 inputs:
   team_id:
