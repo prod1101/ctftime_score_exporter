@@ -72,6 +72,3 @@ jobs:
             as[FuzzyDragons](https://ctftime.org/team/193568)
 
             ## Past CTF participation
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6

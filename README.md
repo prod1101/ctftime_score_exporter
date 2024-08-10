@@ -1,24 +1,30 @@
 # CTFTime Score Exporter GitHub Action
+
 [![GitHub Super-Linter](https://github.com/actions/typescript-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yml/badge.svg)
 [![Check dist/](https://github.com/actions/typescript-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/check-dist.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
-[//]: # ([![CodeQL]&#40;https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml/badge.svg&#41;]&#40;https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml&#41;)
+[//]:
+  #
+  '[![CodeQL](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml)'
 
-This GitHub Action exports CTFs and placements of a team from the CTFTime API and saves it to a Markdown file.
+This GitHub Action exports CTFs and placements of a team from the CTFTime API
+and saves it to a Markdown file.
 
 ## Features
+
 - Export CTFs and placements of a team from the CTFTime API
-- Save the data to a Markdown file 
+- Save the data to a Markdown file
 - Optionally, color codes placements to reflect placement in the given CTF
 - Optionally, generates a summary of all CTFs of a team
 
 ## Usage
 
 ### Basic Example
-This example runs the action and saves the data to `./scores.md`.
-A PR is created with the changes.
+
+This example runs the action and saves the data to `./scores.md`. A PR is
+created with the changes.
 
 ```yaml
 # .github/workflows/fetch-scores.yaml
@@ -59,8 +65,9 @@ jobs:
 ```
 
 ### Input Parameters
+
 | Argument               | Description                                         | Required | Default            | Supported choices                             |
-|------------------------|-----------------------------------------------------|----------|--------------------|-----------------------------------------------|
+| ---------------------- | --------------------------------------------------- | -------- | ------------------ | --------------------------------------------- |
 | `team_id`              | The ID of the team whose scores are to be exported  | true     | `8323`             |                                               |
 | `outfile_path`         | The path to save the scores to                      | true     | `./team-scores.md` |                                               |
 | `prefix`               | Text to prepend to the scores                       | false    | `''`               |                                               |
@@ -75,7 +82,7 @@ jobs:
 | `percentile_color_25`  | Color for the 25th percentile                       | false    | `#1eff00`          |                                               |
 
 ### Output Parameters
-| Argument | Description                      |
-|----------|----------------------------------|
-| `scores` | The fetched and generated scores |
 
+| Argument | Description                      |
+| -------- | -------------------------------- |
+| `scores` | The fetched and generated scores |
