@@ -1,7 +1,7 @@
 {
   "name": "ctftime-team-score-exporter",
   "description": "CTFTime Team Score Exporter",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "prod1101",
   "private": false,
   "homepage": "https://github.com/prod1101/ctftime_score_exporter",
