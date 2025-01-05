@@ -26613,7 +26613,11 @@ async function run() {
     try {
         const team_id = parseInt(core.getInput('team_id'), 10);
         const team_data = await (0, ctf_time_api_1.fetchTeamByTeamId)(team_id);
-        const interesting_years = (0, utils_1.range)(2011, new Date().getFullYear() + 1)
+        const start_year = parseInt(core.getInput('start_year'), 10);
+        const end_year = core.getInput('end_year') === 'present'
+            ? new Date().getFullYear() + 1
+            : new Date(parseInt(core.getInput('end_year'), 10), 1, 1).getFullYear();
+        const interesting_years = (0, utils_1.range)(start_year, end_year)
             .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
             .reverse();
         const percentile_colors = core.getInput('percentile_colors').toLowerCase() === 'true';

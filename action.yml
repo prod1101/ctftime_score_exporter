@@ -16,6 +16,15 @@ inputs:
     required: true
     default: './team-scores.md'
 
+  start_year:
+    description: 'Only get data from this year onward.'
+    required: false
+    default: '2011'
+  end_year:
+    description: 'Only get data until the specified year.'
+    required: false
+    default: 'present'
+
   prefix:
     description: 'Text to prepend to the scores'
     required: false

@@ -10,6 +10,8 @@
 export function setupActionDefaultEnvironmentVariables(): void {
   process.env['INPUT_PREFIX'] = ''
   process.env['INPUT_SUFFIX'] = ''
+  process.env['INPUT_START_YEAR'] = '2023'
+  process.env['INPUT_END_YEAR'] = '2024'
   process.env['INPUT_PERCENTILE_COLORS'] = 'false'
   process.env['INPUT_PERCENTILE_RANKINGS'] = 'false'
   process.env['INPUT_PERCENTILE_COLOR_100'] = '#e5cc80'
