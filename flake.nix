@@ -11,6 +11,7 @@
       in {
         devShell = pkgs.mkShell {
           buildInputs= with pkgs;[
+            git-cliff
             nodejs_22
             nodePackages.npm
             nodePackages.typescript
