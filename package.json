@@ -31,7 +31,7 @@
     "format:check": "pnpx prettier --check .",
     "lint": "pnpx eslint . -c ./.github/linters/.eslintrc.yml",
     "local-action": "pnpx local-action . src/main.ts .env",
-    "package": "pnpx ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt",
     "package:watch": "pnpm run package -- --watch",
     "test": "pnpx jest",
     "all": "pnpm run format:write && pnpm run test && pnpm run coverage && pnpm run package"
