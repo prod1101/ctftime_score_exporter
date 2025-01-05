@@ -12,6 +12,7 @@ and saves it to a Markdown file.
 
 - Export CTFs and placements of a team from the CTFTime API
 - Save the data to a Markdown file
+- Optionally, lets you specify the data's time period
 - Optionally, color codes placements to reflect placement in the given CTF
 - Optionally, generates a summary of all CTFs of a team
 
@@ -68,6 +69,8 @@ jobs:
 | `outfile_path`         | The path to save the scores to                      | true     | `./team-scores.md` |                                               |
 | `prefix`               | Text to prepend to the scores                       | false    | `''`               |                                               |
 | `suffix`               | Text to append to the scores                        | false    | `''`               |                                               |
+| `start_year`           | Only get data from this year onward                 | false    | `'2011'`           |                                               |
+| `end_year`             | Only get data until the specified year.             | false    | `'present'`        |                                               |
 | `percentile_colors`    | Colors for the percentiles                          | false    | `false`            | [`true`, `false`]                             |
 | `percentile_rankings`  | Display the percentile rankings as a Markdown table | false    | `false`            | [`true`, `top`, `transpose`, `top_transpose`] |
 | `percentile_color_100` | Color for the 100th percentile                      | false    | `#e5cc80`          |                                               |
