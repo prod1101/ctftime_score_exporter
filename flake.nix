@@ -11,9 +11,8 @@
       in {
         devShell = pkgs.mkShell {
           buildInputs= with pkgs;[
-            git-cliff
             nodejs_22
-            nodePackages.pnpm
+            nodePackages.npm
             nodePackages.typescript
             nodePackages.typescript-language-server
           ];
