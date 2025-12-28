@@ -73,7 +73,7 @@
     "i18n-iso-countries": "^7.14.0"
   },
   "devDependencies": {
-    "@github/local-action": "^6.0.2",
+    "@github/local-action": "^2.2.1",
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.1",
