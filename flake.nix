@@ -5,14 +5,14 @@
   };
 
   outputs = inputs:
-    inputs.flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = (import (inputs.nixpkgs) { inherit system; });
+    inputs.flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import (inputs.nixpkgs) {inherit system;};
       in {
         devShell = pkgs.mkShell {
-          buildInputs= with pkgs;[
+          buildInputs = with pkgs; [
             git-cliff
-            nodejs_22
+            nodejs_24
             nodePackages.npm
             nodePackages.typescript
             nodePackages.typescript-language-server

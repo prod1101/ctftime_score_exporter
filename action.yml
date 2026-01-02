@@ -19,7 +19,7 @@ inputs:
   start_year:
     description: 'Only get data from this year onward.'
     required: false
-    default: '2011'
+    default: '2014'
   end_year:
     description: 'Only get data until the specified year.'
     required: false
@@ -78,5 +78,5 @@ outputs:
     description: 'The fetched and generated scores'
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.js
