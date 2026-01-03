@@ -26750,6 +26750,7 @@ exports.fetchTeamByTeamId = fetchTeamByTeamId;
 exports.fetchCompetitionsFromYear = fetchCompetitionsFromYear;
 exports.filterCompetitionsByTeamId = filterCompetitionsByTeamId;
 const http = __importStar(__nccwpck_require__(4844));
+const core = __importStar(__nccwpck_require__(7484));
 /**
  * Fetches the details of a team by its team ID.
  *
@@ -26759,6 +26760,7 @@ const http = __importStar(__nccwpck_require__(4844));
  */
 async function fetchTeamByTeamId(team_id) {
     const client = new http.HttpClient('CTFTime Crawler');
+    core.info('Fetching team data for team id: ' + team_id);
     const response = await client.getJson(`https://ctftime.org/api/v1/teams/${team_id}/`);
     if (response.result === null) {
         throw new Error(`No team found for the team id ${team_id}`);
@@ -26868,9 +26870,12 @@ async function run() {
         const end_year = core.getInput('end_year') === 'present'
             ? new Date().getFullYear() + 1
             : new Date(parseInt(core.getInput('end_year'), 10), 1, 1).getFullYear();
-        const interesting_years = (0, utils_1.range)(start_year, end_year)
-            .filter(year => team_data.rating[year.toString()].rating_points !== undefined)
-            .reverse();
+        const interesting_years = (0, utils_1.range)(start_year, end_year);
+        // .filter(
+        //   year => {team_data.rating[year.toString()].rating_points !== undefined}
+        // )
+        // .reverse()
+        core.info('interesting_years:' + JSON.stringify(interesting_years));
         const percentile_colors = core.getInput('percentile_colors').toLowerCase() === 'true';
         let comp_data = '';
         for (const year of interesting_years) {
