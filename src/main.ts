@@ -34,10 +34,11 @@ export async function run(): Promise<void> {
         ? new Date().getFullYear() + 1
         : new Date(parseInt(core.getInput('end_year'), 10), 1, 1).getFullYear()
     const interesting_years = range(start_year, end_year)
-    // .filter(
-    //   year => {team_data.rating[year.toString()].rating_points !== undefined}
-    // )
-    // .reverse()
+      .filter(year => {
+        const r = team_data.rating?.[String(year)]
+        return r?.rating_points !== undefined
+      })
+      .reverse()
     core.info('interesting_years:' + JSON.stringify(interesting_years))
     const percentile_colors =
       core.getInput('percentile_colors').toLowerCase() === 'true'
