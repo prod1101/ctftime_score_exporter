@@ -26862,6 +26862,8 @@ async function run() {
     try {
         const team_id = parseInt(core.getInput('team_id'), 10);
         const team_data = await (0, ctf_time_api_1.fetchTeamByTeamId)(team_id);
+        core.info('team_data:' + JSON.stringify(team_data));
+        // exit()
         const start_year = parseInt(core.getInput('start_year'), 10);
         const end_year = core.getInput('end_year') === 'present'
             ? new Date().getFullYear() + 1

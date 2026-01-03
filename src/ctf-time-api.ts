@@ -1,4 +1,5 @@
 import * as http from '@actions/http-client'
+import * as core from '@actions/core'
 
 /**
  * Interface representing the rating details of a team.
@@ -42,6 +43,7 @@ interface TeamDetails {
  */
 export async function fetchTeamByTeamId(team_id: number): Promise<TeamDetails> {
   const client: http.HttpClient = new http.HttpClient('CTFTime Crawler')
+  core.info('Fetching team data for team id: ' + team_id)
   const response = await client.getJson<TeamDetails>(
     `https://ctftime.org/api/v1/teams/${team_id}/`
   )
