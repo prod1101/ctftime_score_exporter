@@ -25,6 +25,7 @@ export async function run(): Promise<void> {
   try {
     const team_id = parseInt(core.getInput('team_id'), 10)
     const team_data = await fetchTeamByTeamId(team_id)
+    core.info('team_data:' + JSON.stringify(team_data))
     const start_year = parseInt(core.getInput('start_year'), 10)
     const end_year =
       core.getInput('end_year') === 'present'
