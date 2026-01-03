@@ -35,7 +35,7 @@ export async function run(): Promise<void> {
         : new Date(parseInt(core.getInput('end_year'), 10), 1, 1).getFullYear()
     const interesting_years = range(start_year, end_year)
       .filter(
-        year => team_data.rating[year.toString()].rating_points !== undefined
+        year => team_data.rating?.[year.toString()].rating_points !== undefined
       )
       .reverse()
     core.info('interesting_years:' + JSON.stringify(interesting_years))
