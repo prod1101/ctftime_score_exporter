@@ -19,7 +19,7 @@ inputs:
   start_year:
     description: 'Only get data from this year onward.'
     required: false
-    default: '2014'
+    default: '2011'
   end_year:
     description: 'Only get data until the specified year.'
     required: false
